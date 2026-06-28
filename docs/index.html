@@ -1820,7 +1820,20 @@
       catch (e) { sessionStorage.removeItem("tnc_session_user"); }
     }
 
-    setInterval(() => { if (currentUser) fetchRegistryFromServerSilent(); }, 60000);
+    // Auto-sync every 5 minutes, but only while this tab is visible/active.
+    // A backgrounded tab does nothing, which keeps Apps Script runtime low.
+    const SYNC_INTERVAL_MS = 5 * 60 * 1000;
+    let lastSyncAt = 0;
+    function maybeSync() {
+      if (!currentUser || document.visibilityState !== "visible") return;
+      const now = Date.now();
+      if (now - lastSyncAt < 60000) return;   // throttle: at most one sync per minute
+      lastSyncAt = now;
+      fetchRegistryFromServerSilent();
+    }
+    setInterval(maybeSync, SYNC_INTERVAL_MS);
+    // When the user returns to the tab, refresh once (still throttled) so data is current.
+    document.addEventListener("visibilitychange", maybeSync);
   });
 
   function startClock() {
