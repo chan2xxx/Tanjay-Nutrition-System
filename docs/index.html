@@ -1618,18 +1618,15 @@
   <!-- CLIENT LOGIC -->
     <!-- ===== Static-mode transport (GitHub Pages -> GAS API) ===== -->
   <script>
-    // 1) Paste your deployed GAS Web App URL here (the one ending in /exec):
+    // 1) Your deployed GAS Web App URL (ends in /exec). Update if you redeploy to a NEW deployment.
     const GAS_API_URL = "https://script.google.com/macros/s/AKfycbyDVaGRxz5kXXhBCWKf0aBNnMLmLQ2Wn103jPpKUL9PjZQ2qPz5Y-NPUx3YzjYgvDl9dg/exec";
 
     // 2) Shim: routes google.script.run.<fn>(...) to a POST on the GAS API.
-    //    Keeps every existing client call working with zero changes.
     (function () {
       function callApi(action, argsLike, ctx) {
         var args = Array.prototype.slice.call(argsLike);
         fetch(GAS_API_URL, {
           method: "POST",
-          // No custom headers => body is text/plain => CORS-simple request
-          // (avoids the preflight that GAS can't answer).
           body: JSON.stringify({ action: action, args: args })
         })
         .then(function (r) { return r.json(); })
@@ -1793,6 +1790,14 @@
     });
   }
 
+  // Browser-tab icon — uses the embedded NNC logo so it works offline & on GitHub Pages.
+  function applyFavicon() {
+    let link = document.querySelector('link[rel="icon"]');
+    if (!link) { link = document.createElement("link"); link.rel = "icon"; document.head.appendChild(link); }
+    link.type = "image/png";
+    link.href = "data:image/png;base64," + NNC_LOGO_B64;
+  }
+
   /* ============================================================
    *  BOOT
    * ============================================================ */
@@ -1804,6 +1809,7 @@
       if (m && m.parentElement !== document.body) document.body.appendChild(m);
     });
     applyLogos();
+    applyFavicon();
     populateBarangayOptions();
     populateBnsOptions();
     populateYearOptions();
