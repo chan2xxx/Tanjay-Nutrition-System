@@ -286,6 +286,11 @@
         <i class="fa-solid fa-mortar-pestle text-sm shrink-0"></i>
         <span class="sidebar-text">MNP Distribution</span>
       </button>
+      <button onclick="switchTab('sari')" id="btn-sari" title="Sari-Sari Stores Masterlist"
+              class="tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold rounded-lg transition text-[#88948b] hover:text-white hover:bg-white/5">
+        <i class="fa-solid fa-store text-sm shrink-0"></i>
+        <span class="sidebar-text">Sari-Sari Stores</span>
+      </button>
     </div>
 
   </nav>
@@ -2233,6 +2238,184 @@
   </div>
 </div>
 
+        <!-- TAB: SARI-SARI STORES MASTERLIST (per store, per year) -->
+<section id="tab-sari" class="tab-content hidden flex flex-col gap-4">
+
+  <!-- Toolbar (not printed) -->
+  <div class="no-print bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <div>
+      <h2 class="text-sm font-extrabold text-[#1e293b] uppercase tracking-wider">Sari-Sari Stores</h2>
+      <p class="text-[11px] text-gray-400">Fortified-food masterlist (per store, per year)</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <input id="sari-search" oninput="resetPage('sari')" type="text" placeholder="Search store…"
+             class="text-xs px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500 w-40">
+      <select id="sari-filter-barangay" onchange="resetPage('sari')"
+              class="brgy-select text-xs px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500"></select>
+      <select id="sari-filter-bns" onchange="resetPage('sari')"
+              class="bns-select text-xs px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500"></select>
+      <select id="sari-filter-range" onchange="resetPage('sari')"
+              class="text-xs px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500"></select>
+      <button onclick="printSariForm()"
+              class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm">
+        <i class="fa-solid fa-print"></i> Print
+      </button>
+      <button onclick="openSariModal()"
+              class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm">
+        <i class="fa-solid fa-plus"></i> Add Store
+      </button>
+    </div>
+  </div>
+
+  <!-- Official printable document -->
+  <div id="sari-official-doc" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 overflow-x-auto">
+
+    <!-- Document header -->
+    <div class="text-center mb-3">
+      <div class="flex items-center justify-center gap-5">
+        <img data-logo="tanjay" alt="Tanjay City Seal" class="w-16 h-16 object-contain">
+        <div class="text-center leading-snug text-[13px] text-black">
+          <p>Republic of the Philippines</p>
+          <p>Province of Negros Oriental</p>
+          <p>City of Tanjay</p>
+        </div>
+        <img data-logo="nnc" alt="National Nutrition Council" class="w-16 h-16 object-contain">
+      </div>
+      <p class="font-extrabold text-[15px] text-black mt-3 tracking-wide">Masterlist of Sari-Sari Stores</p>
+      <p class="font-bold text-[12px] text-black">BARANGAY: <span id="sari-barangay-label">—</span></p>
+    </div>
+
+    <!-- Official table: NAME | YEAR1 (5 products) | [Action] | YEAR2 (5 products) | [Action] -->
+    <table class="official-table w-full border-collapse text-[10px] text-black">
+      <thead>
+        <tr class="bg-gray-50">
+          <th rowspan="3" class="px-2 py-1 align-middle font-extrabold text-[12px]">NAME</th>
+          <th colspan="5" class="px-1 py-1 font-extrabold text-[12px]"><span id="sari-year1-label">—</span></th>
+          <th rowspan="3" class="px-1 py-1 align-middle no-print font-extrabold">Action</th>
+          <th colspan="5" class="px-1 py-1 font-extrabold text-[12px]"><span id="sari-year2-label">—</span></th>
+          <th rowspan="3" class="px-1 py-1 align-middle no-print font-extrabold">Action</th>
+        </tr>
+        <tr class="bg-gray-50 font-extrabold">
+          <th colspan="2" class="px-1 py-1">Vit. A</th>
+          <th class="px-1 py-1">Iron</th>
+          <th rowspan="2" class="px-1 py-1 align-middle">Sangkap<br>Pinoy</th>
+          <th rowspan="2" class="px-1 py-1 align-middle">Iodized<br>Salt</th>
+          <th colspan="2" class="px-1 py-1">Vit. A</th>
+          <th class="px-1 py-1">Iron</th>
+          <th rowspan="2" class="px-1 py-1 align-middle">Sangkap<br>Pinoy</th>
+          <th rowspan="2" class="px-1 py-1 align-middle">Iodized<br>Salt</th>
+        </tr>
+        <tr class="bg-gray-50 text-[9px] font-bold">
+          <th class="px-1 py-0.5">Fortified<br>Oil</th>
+          <th class="px-1 py-0.5">Fortified<br>Flour</th>
+          <th class="px-1 py-0.5">Fortified<br>Rice</th>
+          <th class="px-1 py-0.5">Fortified<br>Oil</th>
+          <th class="px-1 py-0.5">Fortified<br>Flour</th>
+          <th class="px-1 py-0.5">Fortified<br>Rice</th>
+        </tr>
+      </thead>
+      <tbody id="sari-official-body"></tbody>
+      <tfoot id="sari-official-foot"></tfoot>
+    </table>
+
+    <!-- Signatory footer -->
+    <div class="sig-grid grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 text-[11px] text-black">
+      <div>
+        <p>Prepared by:</p>
+        <div class="mt-6 text-center">
+          <p id="sari-sig-bns" class="border-t border-black pt-0.5 font-bold">&nbsp;</p>
+          <p>BNS</p>
+        </div>
+      </div>
+      <div>
+        <p>Assessed by:</p>
+        <div class="mt-6 text-center">
+          <p class="border-t border-black pt-0.5">&nbsp;</p>
+          <p>RSI</p>
+        </div>
+      </div>
+      <div>
+        <p>Reviewed by:</p>
+        <div class="mt-6 text-center">
+          <p class="font-bold border-t border-black pt-0.5">STEPHANIE R. REYES</p>
+          <p>NO II/CNAO</p>
+        </div>
+      </div>
+      <div>
+        <p>Noted by:</p>
+        <div class="mt-6 text-center">
+          <p class="font-bold border-t border-black pt-0.5">DR. WILSON ANTHONY K. EGOS</p>
+          <p>CHO</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination (not printed) -->
+  <div class="no-print flex items-center justify-between gap-3 text-xs text-gray-500 px-1">
+    <span id="sari-page-info">—</span>
+    <div class="flex gap-2">
+      <button onclick="changePage('sari',-1)" class="px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 font-bold text-gray-600">‹ Prev</button>
+      <button onclick="changePage('sari',1)" class="px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 font-bold text-gray-600">Next ›</button>
+    </div>
+  </div>
+</section>
+
+<!-- SARI-SARI MODAL (one store, one year) -->
+<div id="sari-modal" class="hidden fixed inset-0 z-[10000] bg-black/50 flex items-center justify-center p-4">
+  <div class="bg-white max-w-2xl w-full rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto">
+    <div class="flex items-center justify-between p-5 border-b border-gray-100">
+      <div class="flex items-center gap-2.5">
+        <img data-logo="tanjay" alt="" class="w-8 h-8 object-contain">
+        <img data-logo="nnc" alt="" class="w-8 h-8 object-contain">
+        <h3 id="sari-modal-title" class="text-base font-extrabold text-[#1e293b]">Add Store Entry</h3>
+      </div>
+      <button onclick="closeSariModal()" class="text-gray-400 hover:text-gray-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+    </div>
+    <form id="sari-form" onsubmit="saveSariRecord(event)" class="p-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input type="hidden" id="sari-modal-id">
+
+      <div>
+        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Store Name</label>
+        <input type="text" id="sari-modal-store" required class="w-full text-sm px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500">
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Barangay</label>
+        <select id="sari-modal-barangay" required class="brgy-select w-full text-sm px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500"></select>
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Year</label>
+        <select id="sari-modal-year" required class="w-full text-sm px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500"></select>
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-2">Fortified Foods Available</label>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
+          <label class="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg cursor-pointer">
+            <input type="checkbox" id="sari-modal-oil" class="accent-green-600"> Fortified Oil <span class="text-[10px] text-gray-400">(Vit. A)</span>
+          </label>
+          <label class="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg cursor-pointer">
+            <input type="checkbox" id="sari-modal-flour" class="accent-green-600"> Fortified Flour <span class="text-[10px] text-gray-400">(Vit. A)</span>
+          </label>
+          <label class="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg cursor-pointer">
+            <input type="checkbox" id="sari-modal-rice" class="accent-green-600"> Fortified Rice <span class="text-[10px] text-gray-400">(Iron)</span>
+          </label>
+          <label class="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg cursor-pointer">
+            <input type="checkbox" id="sari-modal-sangkap" class="accent-green-600"> Sangkap Pinoy
+          </label>
+          <label class="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg cursor-pointer">
+            <input type="checkbox" id="sari-modal-salt" class="accent-green-600"> Iodized Salt
+          </label>
+        </div>
+      </div>
+
+      <div class="md:col-span-2 flex justify-end gap-2 pt-2 border-t border-gray-100">
+        <button type="button" onclick="closeSariModal()" class="text-xs font-bold text-gray-500 px-4 py-2 rounded-lg hover:bg-gray-100">Cancel</button>
+        <button type="submit" id="sari-save-btn" class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-5 py-2 rounded-lg shadow-sm">Save Entry</button>
+      </div>
+    </form>
+  </div>
+</div>
+
       </main>
 
     </div><!-- /content column (opened in Sidebar.html) -->
@@ -2292,6 +2475,7 @@
   let wifaDatabase = [];
   let lnsDatabase = [];
   let mnpDatabase = [];
+  let sariDatabase = [];
   let currentUser = null;
   let pendingAuthEmail = "";
   let bmiChartInstance = null;
@@ -2376,8 +2560,8 @@
    *  PAGINATION (22 rows per page, like the official form)
    * ============================================================ */
   const PAGE_SIZE = 22;
-  const pageNum = { vit: 1, mms: 1, anmum: 1, iron: 1, wifa: 1, lns: 1, cal: 1, feso4: 1, mnp: 1 };
-  const formTotalPages = { vit: 1, mms: 1, anmum: 1, iron: 1, wifa: 1, lns: 1, cal: 1, feso4: 1, mnp: 1 };
+  const pageNum = { vit: 1, mms: 1, anmum: 1, iron: 1, wifa: 1, lns: 1, cal: 1, feso4: 1, mnp: 1, sari: 1 };
+  const formTotalPages = { vit: 1, mms: 1, anmum: 1, iron: 1, wifa: 1, lns: 1, cal: 1, feso4: 1, mnp: 1, sari: 1 };
 
   function rerenderForm(prefix) {
     if (prefix === "vit") renderVitaminAOfficial();
@@ -2389,6 +2573,7 @@
     else if (prefix === "cal") renderCalciumOfficial();
     else if (prefix === "feso4") renderFeso4Official();
     else if (prefix === "mnp") renderMnpOfficial();
+    else if (prefix === "sari") renderSariOfficial();
   }
   // Prev / Next buttons
   function changePage(prefix, delta) {
@@ -2446,7 +2631,7 @@
   window.addEventListener("DOMContentLoaded", () => {
     startClock();
     // Move form modals to <body> so their fixed backdrop covers the whole screen
-    ["vitamin-a-modal","mms-modal","anmum-modal","iron-modal","wifa-modal","lns-modal","calcium-modal","feso4-modal","mnp-modal"].forEach(id => {
+    ["vitamin-a-modal","mms-modal","anmum-modal","iron-modal","wifa-modal","lns-modal","calcium-modal","feso4-modal","mnp-modal","sari-modal"].forEach(id => {
       const m = document.getElementById(id);
       if (m && m.parentElement !== document.body) document.body.appendChild(m);
     });
@@ -2455,6 +2640,8 @@
     populateBarangayOptions();
     populateBnsOptions();
     populateYearOptions();
+    populateSariRangeOptions();
+    populateSariYearOptions();
 
     const saved = sessionStorage.getItem("tnc_session_user");
     if (saved) {
@@ -2664,9 +2851,9 @@
     }
 
     // Lock barangay/BNS pickers for BNS to their territory
-    ["vit-filter-barangay","mms-filter-barangay","anmum-filter-barangay","iron-filter-barangay","wifa-filter-barangay","lns-filter-barangay","cal-filter-barangay","feso4-filter-barangay","mnp-filter-barangay",
-     "vit-filter-bns","mms-filter-bns","anmum-filter-bns","iron-filter-bns","wifa-filter-bns","lns-filter-bns","cal-filter-bns","feso4-filter-bns","mnp-filter-bns",
-     "vit-modal-barangay","mms-modal-barangay","anmum-modal-barangay","iron-modal-barangay","wifa-modal-barangay","lns-modal-barangay","cal-modal-barangay","feso4-modal-barangay","mnp-modal-barangay"].forEach(id => {
+    ["vit-filter-barangay","mms-filter-barangay","anmum-filter-barangay","iron-filter-barangay","wifa-filter-barangay","lns-filter-barangay","cal-filter-barangay","feso4-filter-barangay","mnp-filter-barangay","sari-filter-barangay",
+     "vit-filter-bns","mms-filter-bns","anmum-filter-bns","iron-filter-bns","wifa-filter-bns","lns-filter-bns","cal-filter-bns","feso4-filter-bns","mnp-filter-bns","sari-filter-bns",
+     "vit-modal-barangay","mms-modal-barangay","anmum-modal-barangay","iron-modal-barangay","wifa-modal-barangay","lns-modal-barangay","cal-modal-barangay","feso4-modal-barangay","mnp-modal-barangay","sari-modal-barangay"].forEach(id => {
       const el = document.getElementById(id); if (!el) return;
       if (isBNS) { el.value = currentUser.barangay; el.disabled = true; } else { el.disabled = false; }
     });
@@ -2780,9 +2967,9 @@
       .withSuccessHandler(s => {
         const r = JSON.parse(s);
         if (r.success) mnpDatabase = r.records; else showToast("MNP: " + r.message, "error");
-        refreshAppView();
+        fetchSariRegistryFromServer();
       })
-      .withFailureHandler(e => { showToast("MNP connection failed: " + e.message, "error"); refreshAppView(); })
+      .withFailureHandler(e => { showToast("MNP connection failed: " + e.message, "error"); fetchSariRegistryFromServer(); })
       .fetchMnpRecords(currentUser.email);
   }
   function fetchRegistryFromServerSilent() {
@@ -2804,7 +2991,10 @@
                   google.script.run.withSuccessHandler(s8 => {
                     const r8 = JSON.parse(s8); if (r8.success) feso4Database = r8.records;
                     google.script.run.withSuccessHandler(s9 => {
-                      const r9 = JSON.parse(s9); if (r9.success) mnpDatabase = r9.records; refreshAppView();
+                      const r9 = JSON.parse(s9); if (r9.success) mnpDatabase = r9.records;
+                      google.script.run.withSuccessHandler(s10 => {
+                        const r10 = JSON.parse(s10); if (r10.success) sariDatabase = r10.records; refreshAppView();
+                      }).fetchSariRecords(currentUser.email);
                     }).fetchMnpRecords(currentUser.email);
                   }).fetchFeso4Records(currentUser.email);
                 }).fetchCalciumRecords(currentUser.email);
@@ -2829,6 +3019,7 @@
     renderCalciumOfficial();
     renderFeso4Official();
     renderMnpOfficial();
+    renderSariOfficial();
   }
 
   /* ============================================================
@@ -2845,7 +3036,7 @@
     const active = document.getElementById("btn-" + tabId);
     if (active) { active.classList.add("theme-sidebar-active"); active.classList.remove("text-[#88948b]","hover:text-white","hover:bg-white/5"); }
 
-    const titles = { "dashboard":"Dashboard", "vitamin-a":"Vitamin A Distribution", "mms":"MMS Distribution", "anmum":"Anmum Milk Distribution", "iron":"Multi Iron Syrup (6-59 mos)", "wifa":"WIFA — Female Learners", "lns":"LNS-SQ (6-59 mos)", "calcium":"Calcium for Pregnant Women", "feso4":"Iron w/ Folic Acid (FeSO4)", "mnp":"Micronutrient Powder (6-59 mos)" };
+    const titles = { "dashboard":"Dashboard", "vitamin-a":"Vitamin A Distribution", "mms":"MMS Distribution", "anmum":"Anmum Milk Distribution", "iron":"Multi Iron Syrup (6-59 mos)", "wifa":"WIFA — Female Learners", "lns":"LNS-SQ (6-59 mos)", "calcium":"Calcium for Pregnant Women", "feso4":"Iron w/ Folic Acid (FeSO4)", "mnp":"Micronutrient Powder (6-59 mos)", "sari":"Sari-Sari Stores Masterlist" };
     document.getElementById("header-workspace-title").innerText = titles[tabId] || tabId;
 
     if (tabId === "dashboard") setTimeout(renderCharts, 100);
@@ -3082,7 +3273,7 @@
   function renderCalciumOfficial() { renderOfficialForm("cal"); }
   function renderFeso4Official() { renderOfficialForm("feso4"); }
 
-  const PREFIX_TAB = { vit: "vitamin-a", mms: "mms", anmum: "anmum", iron: "iron", wifa: "wifa", lns: "lns", cal: "calcium", feso4: "feso4", mnp: "mnp" };
+  const PREFIX_TAB = { vit: "vitamin-a", mms: "mms", anmum: "anmum", iron: "iron", wifa: "wifa", lns: "lns", cal: "calcium", feso4: "feso4", mnp: "mnp", sari: "sari" };
   // Print the entire filtered set: each page is a complete form
   // (header + 22 rows + signatories), with a page break between pages.
   function printOfficialForm(prefix) {
@@ -3813,6 +4004,194 @@
   }
 
 
+
+  /* ============================================================
+   *  SARI-SARI STORES — masterlist (per store, per year)
+   * ============================================================ */
+  let sariRows = [];   // current filtered+sorted store rows (for action lookups)
+
+  function sariSetText(id, v) { const e = document.getElementById(id); if (e) e.textContent = v; }
+
+  function getSariRange() {
+    const start = parseInt(document.getElementById("sari-filter-range") && document.getElementById("sari-filter-range").value) || 2025;
+    return { y1: start, y2: start + 1 };
+  }
+
+  function populateSariRangeOptions() {
+    const sel = document.getElementById("sari-filter-range");
+    if (!sel) return;
+    sel.innerHTML = "";
+    for (let y = 2025; y <= 2034; y++) {
+      const o = document.createElement("option");
+      o.value = y; o.textContent = y + " \u2013 " + (y + 1);
+      sel.appendChild(o);
+    }
+    const cur = new Date().getFullYear();
+    sel.value = (cur - 1 >= 2025 && cur - 1 <= 2034) ? String(cur - 1) : "2025";
+  }
+
+  function populateSariYearOptions() {
+    const sel = document.getElementById("sari-modal-year");
+    if (!sel) return;
+    sel.innerHTML = "";
+    for (let y = 2025; y <= 2035; y++) {
+      const o = document.createElement("option");
+      o.value = y; o.textContent = y;
+      sel.appendChild(o);
+    }
+  }
+
+  function renderSariOfficial() {
+    const body = document.getElementById("sari-official-body");
+    const foot = document.getElementById("sari-official-foot");
+    if (!body) return;
+    const range = getSariRange(), y1 = range.y1, y2 = range.y2;
+    sariSetText("sari-year1-label", y1);
+    sariSetText("sari-year2-label", y2);
+
+    const brgy = (document.getElementById("sari-filter-barangay") || {}).value || "";
+    const bnsBrgy = (document.getElementById("sari-filter-bns") || {}).value || "";
+    const q = ((document.getElementById("sari-search") || {}).value || "").toLowerCase();
+    const effBrgy = bnsBrgy || brgy;
+    sariSetText("sari-barangay-label", effBrgy || "All Barangays");
+
+    let list = sariDatabase.filter(r =>
+      (!effBrgy || r.barangay === effBrgy) &&
+      (!q || r.store.toLowerCase().includes(q)) &&
+      (r.year === y1 || r.year === y2));
+
+    const map = {};
+    list.forEach(r => {
+      const key = r.barangay + "||" + r.store.toLowerCase();
+      if (!map[key]) map[key] = { store: r.store, barangay: r.barangay, y1: null, y2: null };
+      if (r.year === y1) map[key].y1 = r; else if (r.year === y2) map[key].y2 = r;
+    });
+    sariRows = Object.values(map).sort((a, b) => a.store.localeCompare(b.store));
+
+    const total = sariRows.length;
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    let page = Math.min(pageNum.sari || 1, totalPages); pageNum.sari = page;
+    const startIdx = (page - 1) * PAGE_SIZE;
+    const pageRows = sariRows.slice(startIdx, startIdx + PAGE_SIZE);
+
+    const chk = on => on ? "\u2713" : "";
+    const prodCells = rec => ["oil","flour","rice","sangkap","salt"]
+      .map(k => `<td class="text-center px-1 py-1">${chk(rec && rec[k])}</td>`).join("");
+    const actionCell = (gi, slot, rec) =>
+      `<td class="no-print whitespace-nowrap text-center px-1">` +
+        `<button onclick="editSariRow(${gi},'${slot}')" class="text-green-600 hover:text-green-800 px-1" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>` +
+        (rec ? `<button onclick="deleteSariRow(${gi},'${slot}')" class="text-rose-500 hover:text-rose-700 px-1" title="Delete"><i class="fa-solid fa-trash"></i></button>` : "") +
+      `</td>`;
+
+    body.innerHTML = "";
+    pageRows.forEach((s, i) => {
+      const gi = startIdx + i;
+      const tr = document.createElement("tr");
+      const nameTd = document.createElement("td");
+      nameTd.className = "text-left px-2 py-1 font-semibold";
+      nameTd.textContent = s.store;
+      tr.appendChild(nameTd);
+      tr.insertAdjacentHTML("beforeend",
+        prodCells(s.y1) + actionCell(gi, "y1", s.y1) +
+        prodCells(s.y2) + actionCell(gi, "y2", s.y2));
+      body.appendChild(tr);
+    });
+    for (let i = pageRows.length; i < PAGE_SIZE; i++) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = "<td class='px-2 py-2'>&nbsp;</td>" +
+        "<td></td><td></td><td></td><td></td><td></td><td class='no-print'></td>" +
+        "<td></td><td></td><td></td><td></td><td></td><td class='no-print'></td>";
+      body.appendChild(tr);
+    }
+
+    const sum = (slot, k) => sariRows.reduce((n, s) => n + (s[slot] && s[slot][k] ? 1 : 0), 0);
+    const totalCells = slot => ["oil","flour","rice","sangkap","salt"]
+      .map(k => `<td class="text-center font-bold px-1 py-1">${sum(slot, k)}</td>`).join("");
+    foot.innerHTML =
+      `<tr class="bg-gray-50 font-extrabold">` +
+        `<td class="text-right px-2 py-1">TOTAL</td>` +
+        totalCells("y1") + `<td class="no-print"></td>` +
+        totalCells("y2") + `<td class="no-print"></td>` +
+      `</tr>`;
+
+    updatePager("sari", page, totalPages, total, startIdx);
+    applyBnsSignatory("sari");
+  }
+
+  function editSariRow(idx, slot) {
+    const s = sariRows[idx]; if (!s) return;
+    openSariModal(s.store, s.barangay, getSariRange()[slot], s[slot]);
+  }
+  function deleteSariRow(idx, slot) {
+    const s = sariRows[idx]; if (!s) return;
+    const rec = s[slot];
+    if (!rec) { showToast("No entry to delete for that year.", "error"); return; }
+    if (!confirm("Permanently delete this record?")) return;
+    if (!inGAS()) { sariDatabase = sariDatabase.filter(x => x.id !== rec.id); renderSariOfficial(); return; }
+    google.script.run
+      .withSuccessHandler(res => { showToast(res.message, res.success ? "success" : "error"); if (res.success) fetchSariRegistryFromServer(); })
+      .withFailureHandler(e => showToast("Delete failed: " + e.message, "error"))
+      .deleteSariRecordFromBackend(rec.id, currentUser.email);
+  }
+
+  function openSariModal(store, barangay, year, rec) {
+    const range = getSariRange();
+    document.getElementById("sari-modal-id").value = rec ? rec.id : "";
+    document.getElementById("sari-modal-store").value = store || "";
+    document.getElementById("sari-modal-barangay").value = barangay ||
+      ((document.getElementById("sari-filter-barangay") || {}).value || "");
+    document.getElementById("sari-modal-year").value = year || range.y1;
+    ["oil","flour","rice","sangkap","salt"].forEach(k => {
+      document.getElementById("sari-modal-" + k).checked = !!(rec && rec[k]);
+    });
+    document.getElementById("sari-modal-title").textContent = rec ? "Edit Store Entry" : "Add Store Entry";
+    document.getElementById("sari-modal").classList.remove("hidden");
+  }
+  function closeSariModal() { document.getElementById("sari-modal").classList.add("hidden"); }
+
+  function saveSariRecord(event) {
+    event.preventDefault();
+    const record = {
+      id:       document.getElementById("sari-modal-id").value || "",
+      store:    document.getElementById("sari-modal-store").value.trim(),
+      barangay: document.getElementById("sari-modal-barangay").value,
+      year:     parseInt(document.getElementById("sari-modal-year").value) || 0,
+      oil:      document.getElementById("sari-modal-oil").checked,
+      flour:    document.getElementById("sari-modal-flour").checked,
+      rice:     document.getElementById("sari-modal-rice").checked,
+      sangkap:  document.getElementById("sari-modal-sangkap").checked,
+      salt:     document.getElementById("sari-modal-salt").checked
+    };
+    if (!record.store || !record.barangay || !record.year) { showToast("Store, barangay and year are required.", "error"); return; }
+
+    const btn = document.getElementById("sari-save-btn");
+    btn.disabled = true; btn.innerText = "Saving\u2026";
+    const done = ok => { btn.disabled = false; btn.innerText = "Save Entry"; if (ok) closeSariModal(); };
+
+    if (!inGAS()) {
+      if (record.id) { const ix = sariDatabase.findIndex(x => x.id === record.id); if (ix > -1) sariDatabase[ix] = record; }
+      else { record.id = "S" + Date.now(); sariDatabase.push(record); }
+      showToast("Saved (preview mode)."); done(true); renderSariOfficial(); return;
+    }
+    google.script.run
+      .withSuccessHandler(res => { showToast(res.message, res.success ? "success" : "error"); done(res.success); if (res.success) fetchSariRegistryFromServer(); })
+      .withFailureHandler(e => { showToast("Save failed: " + e.message, "error"); done(false); })
+      .addOrUpdateSariRecord(record, currentUser.email);
+  }
+
+  function printSariForm() { printOfficialForm("sari"); }
+
+  function fetchSariRegistryFromServer() {
+    if (!inGAS()) { refreshAppView(); return; }
+    google.script.run
+      .withSuccessHandler(s => {
+        const r = JSON.parse(s);
+        if (r.success) sariDatabase = r.records; else showToast("Sari-Sari: " + r.message, "error");
+        refreshAppView();
+      })
+      .withFailureHandler(e => { showToast("Sari-Sari connection failed: " + e.message, "error"); refreshAppView(); })
+      .fetchSariRecords(currentUser.email);
+  }
 
   /* ============================================================
    *  WIFA (female learners) — own renderer (school + in/out school)
