@@ -2666,19 +2666,7 @@
     </div>
 
     <!-- Official table: NAME | per year [MALNOURISHED(4) + YEAR(3) + Action] x3 -->
-    <table class="official-table w-full border-collapse text-[10px] text-black" style="table-layout:fixed">
-      <colgroup>
-        <col>                                          <!-- NAME absorbs remaining width -->
-        <col span="4" style="width:3.1%">              <!-- y1 UW SUW W SW -->
-        <col span="3" style="width:3.8%">              <!-- y1 POULTRY LIVESTOCK GARDEN -->
-        <col class="no-print" style="width:3%">        <!-- y1 action -->
-        <col span="4" style="width:3.1%">              <!-- y2 -->
-        <col span="3" style="width:3.8%">
-        <col class="no-print" style="width:3%">
-        <col span="4" style="width:3.1%">              <!-- y3 -->
-        <col span="3" style="width:3.8%">
-        <col class="no-print" style="width:3%">
-      </colgroup>
+    <table class="official-table w-full border-collapse text-[10px] text-black">
       <thead>
         <tr class="bg-gray-50 font-extrabold">
           <th rowspan="2" class="px-2 py-1 align-middle text-[12px]">NAME</th>
@@ -2694,11 +2682,11 @@
         </tr>
         <tr class="bg-gray-50 text-[8px] font-bold">
           <th class="px-0.5 py-0.5">UW</th><th class="px-0.5 py-0.5">SUW</th><th class="px-0.5 py-0.5">W</th><th class="px-0.5 py-0.5">SW</th>
-          <th class="px-0.5 py-0.5">POUL-<br>TRY</th><th class="px-0.5 py-0.5">LIVE-<br>STOCK</th><th class="px-0.5 py-0.5">GAR-<br>DEN</th>
+          <th class="px-1 py-0.5 whitespace-nowrap">POULTRY</th><th class="px-1 py-0.5 whitespace-nowrap">LIVESTOCK</th><th class="px-1 py-0.5 whitespace-nowrap">GARDEN</th>
           <th class="px-0.5 py-0.5">UW</th><th class="px-0.5 py-0.5">SUW</th><th class="px-0.5 py-0.5">W</th><th class="px-0.5 py-0.5">SW</th>
-          <th class="px-0.5 py-0.5">POUL-<br>TRY</th><th class="px-0.5 py-0.5">LIVE-<br>STOCK</th><th class="px-0.5 py-0.5">GAR-<br>DEN</th>
+          <th class="px-1 py-0.5 whitespace-nowrap">POULTRY</th><th class="px-1 py-0.5 whitespace-nowrap">LIVESTOCK</th><th class="px-1 py-0.5 whitespace-nowrap">GARDEN</th>
           <th class="px-0.5 py-0.5">UW</th><th class="px-0.5 py-0.5">SUW</th><th class="px-0.5 py-0.5">W</th><th class="px-0.5 py-0.5">SW</th>
-          <th class="px-0.5 py-0.5">POUL-<br>TRY</th><th class="px-0.5 py-0.5">LIVE-<br>STOCK</th><th class="px-0.5 py-0.5">GAR-<br>DEN</th>
+          <th class="px-1 py-0.5 whitespace-nowrap">POULTRY</th><th class="px-1 py-0.5 whitespace-nowrap">LIVESTOCK</th><th class="px-1 py-0.5 whitespace-nowrap">GARDEN</th>
         </tr>
       </thead>
       <tbody id="fp-official-body"></tbody>
@@ -4810,7 +4798,7 @@
     sel.innerHTML = "";
     for (let y = 2024; y <= 2033; y++) {
       const o = document.createElement("option");
-      o.value = y; o.textContent = y + " \u2013 " + (y + 2);
+      o.value = y; o.textContent = y + "-" + (y + 1) + "-" + (y + 2);
       sel.appendChild(o);
     }
     const start = new Date().getFullYear() - 2;
