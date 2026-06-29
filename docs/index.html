@@ -4083,7 +4083,7 @@
 
     const chk = on => on ? "\u2713" : "";
     const prodCells = rec => ["oil","flour","rice","sangkap","salt"]
-      .map(k => `<td class="text-center px-1 py-1">${chk(rec && rec[k])}</td>`).join("");
+      .map(k => `<td class="text-center px-1">${chk(rec && rec[k])}</td>`).join("");
     const actionCell = (gi, slot, rec) =>
       `<td class="no-print whitespace-nowrap text-center px-1">` +
         `<button onclick="editSariRow(${gi},'${slot}')" class="text-green-600 hover:text-green-800 px-1" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>` +
@@ -4095,7 +4095,7 @@
       const gi = startIdx + i;
       const tr = document.createElement("tr");
       const nameTd = document.createElement("td");
-      nameTd.className = "text-left px-2 py-1 font-semibold";
+      nameTd.className = "name-cell px-2 font-semibold";
       nameTd.textContent = s.store;
       tr.appendChild(nameTd);
       tr.insertAdjacentHTML("beforeend",
@@ -4105,7 +4105,7 @@
     });
     for (let i = pageRows.length; i < PAGE_SIZE; i++) {
       const tr = document.createElement("tr");
-      tr.innerHTML = "<td class='px-2 py-1'>&nbsp;</td>" +
+      tr.innerHTML = "<td class='px-2'>&nbsp;</td>" +
         "<td></td><td></td><td></td><td></td><td></td><td class='no-print'></td>" +
         "<td></td><td></td><td></td><td></td><td></td><td class='no-print'></td>";
       body.appendChild(tr);
@@ -4113,10 +4113,10 @@
 
     const sum = (slot, k) => sariRows.reduce((n, s) => n + (s[slot] && s[slot][k] ? 1 : 0), 0);
     const totalCells = slot => ["oil","flour","rice","sangkap","salt"]
-      .map(k => `<td class="text-center font-bold px-1 py-1">${sum(slot, k)}</td>`).join("");
+      .map(k => `<td class="text-center font-bold px-1">${sum(slot, k)}</td>`).join("");
     foot.innerHTML =
       `<tr class="bg-gray-50 font-extrabold">` +
-        `<td class="text-right px-2 py-1">TOTAL</td>` +
+        `<td class="text-right px-2">TOTAL</td>` +
         totalCells("y1") + `<td class="no-print"></td>` +
         totalCells("y2") + `<td class="no-print"></td>` +
       `</tr>`;
