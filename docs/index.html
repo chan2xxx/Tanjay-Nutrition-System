@@ -2245,10 +2245,10 @@
   <div class="no-print bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
     <div>
       <h2 class="text-sm font-extrabold text-[#1e293b] uppercase tracking-wider">Sari-Sari Stores</h2>
-      <p class="text-[11px] text-gray-400">Fortified-food masterlist (per store, per year)</p>
+      <p class="text-[11px] text-gray-400">Fortified-food masterlist (by store owner, per year)</p>
     </div>
     <div class="flex flex-wrap items-center gap-2">
-      <input id="sari-search" oninput="resetPage('sari')" type="text" placeholder="Search store…"
+      <input id="sari-search" oninput="resetPage('sari')" type="text" placeholder="Search owner…"
              class="text-xs px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500 w-40">
       <select id="sari-filter-barangay" onchange="resetPage('sari')"
               class="brgy-select text-xs px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500"></select>
@@ -2383,8 +2383,8 @@
       <input type="hidden" id="sari-modal-id">
 
       <div>
-        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Store Name</label>
-        <input type="text" id="sari-modal-store" required class="w-full text-sm px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500">
+        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Name of Store Owner</label>
+        <input type="text" id="sari-modal-store" required placeholder="e.g. Juan Dela Cruz" class="w-full text-sm px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500">
       </div>
       <div>
         <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Barangay</label>
