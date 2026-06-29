@@ -2292,6 +2292,7 @@
     <!-- Official table: NAME | YEAR1 (5 products) | [Action] | YEAR2 (5 products) | [Action] -->
     <table class="official-table w-full border-collapse text-[10px] text-black" style="table-layout:fixed">
       <colgroup>
+        <col style="width:4%">                         <!-- No. -->
         <col>                                          <!-- NAME absorbs remaining width -->
         <col span="5" style="width:5.5%">              <!-- year 1 products -->
         <col class="no-print" style="width:4%">        <!-- year 1 action (collapses on print) -->
@@ -2300,6 +2301,7 @@
       </colgroup>
       <thead>
         <tr class="bg-gray-50">
+          <th rowspan="3" class="px-1 py-1 align-middle font-extrabold">No.</th>
           <th rowspan="3" class="px-2 py-1 align-middle font-extrabold text-[12px]">NAME</th>
           <th colspan="5" class="px-1 py-1 font-extrabold text-[12px]"><span id="sari-year1-label">—</span></th>
           <th rowspan="3" class="px-1 py-1 align-middle no-print font-extrabold">Action</th>
@@ -2477,6 +2479,7 @@
     <!-- Official table: NAME | YEAR1 (5 products) | [Action] | YEAR2 (5 products) | [Action] -->
     <table class="official-table w-full border-collapse text-[10px] text-black" style="table-layout:fixed">
       <colgroup>
+        <col style="width:4%">                         <!-- No. -->
         <col>                                          <!-- NAME absorbs remaining width -->
         <col span="5" style="width:5.5%">              <!-- year 1 products -->
         <col class="no-print" style="width:4%">        <!-- year 1 action (collapses on print) -->
@@ -2485,6 +2488,7 @@
       </colgroup>
       <thead>
         <tr class="bg-gray-50">
+          <th rowspan="3" class="px-1 py-1 align-middle font-extrabold">No.</th>
           <th rowspan="3" class="px-2 py-1 align-middle font-extrabold text-[12px]">NAME</th>
           <th colspan="5" class="px-1 py-1 font-extrabold text-[12px]"><span id="bakery-year1-label">—</span></th>
           <th rowspan="3" class="px-1 py-1 align-middle no-print font-extrabold">Action</th>
@@ -2663,6 +2667,7 @@
     <table class="official-table w-full border-collapse text-[10px] text-black">
       <thead>
         <tr class="bg-gray-50 font-extrabold">
+          <th rowspan="2" class="px-1 py-1 align-middle">No.</th>
           <th rowspan="2" class="px-2 py-1 align-middle text-[12px]">NAME</th>
           <th colspan="4" class="px-1 py-1">MALNOURISHED</th>
           <th colspan="3" class="px-1 py-1"><span id="fp-year1-label">—</span></th>
@@ -4482,6 +4487,10 @@
       const nameTd = document.createElement("td");
       nameTd.className = "name-cell px-2 font-semibold";
       nameTd.textContent = s.store;
+      const noTd = document.createElement("td");
+      noTd.className = "text-center text-gray-500";
+      noTd.textContent = gi + 1;
+      tr.appendChild(noTd);
       tr.appendChild(nameTd);
       tr.insertAdjacentHTML("beforeend",
         prodCells(s.y1) + actionCell(gi, "y1", s.y1) +
@@ -4490,7 +4499,7 @@
     });
     for (let i = pageRows.length; i < PAGE_SIZE; i++) {
       const tr = document.createElement("tr");
-      tr.innerHTML = "<td class='px-2'>&nbsp;</td>" +
+      tr.innerHTML = "<td class='text-center text-gray-400'>" + (startIdx + i + 1) + "</td><td class='px-2'>&nbsp;</td>" +
         "<td></td><td></td><td></td><td></td><td></td><td class='no-print'></td>" +
         "<td></td><td></td><td></td><td></td><td></td><td class='no-print'></td>";
       body.appendChild(tr);
@@ -4501,7 +4510,7 @@
       .map(k => `<td class="text-center font-bold px-1">${sum(slot, k)}</td>`).join("");
     foot.innerHTML =
       `<tr class="bg-gray-50 font-extrabold">` +
-        `<td class="text-right px-2">TOTAL</td>` +
+        `<td colspan="2" class="text-right px-2">TOTAL</td>` +
         totalCells("y1") + `<td class="no-print"></td>` +
         totalCells("y2") + `<td class="no-print"></td>` +
       `</tr>`;
@@ -4670,6 +4679,10 @@
       const nameTd = document.createElement("td");
       nameTd.className = "name-cell px-2 font-semibold";
       nameTd.textContent = s.store;
+      const noTd = document.createElement("td");
+      noTd.className = "text-center text-gray-500";
+      noTd.textContent = gi + 1;
+      tr.appendChild(noTd);
       tr.appendChild(nameTd);
       tr.insertAdjacentHTML("beforeend",
         prodCells(s.y1) + actionCell(gi, "y1", s.y1) +
@@ -4678,7 +4691,7 @@
     });
     for (let i = pageRows.length; i < PAGE_SIZE; i++) {
       const tr = document.createElement("tr");
-      tr.innerHTML = "<td class='px-2'>&nbsp;</td>" +
+      tr.innerHTML = "<td class='text-center text-gray-400'>" + (startIdx + i + 1) + "</td><td class='px-2'>&nbsp;</td>" +
         "<td></td><td></td><td></td><td></td><td></td><td class='no-print'></td>" +
         "<td></td><td></td><td></td><td></td><td></td><td class='no-print'></td>";
       body.appendChild(tr);
@@ -4689,7 +4702,7 @@
       .map(k => `<td class="text-center font-bold px-1">${sum(slot, k)}</td>`).join("");
     foot.innerHTML =
       `<tr class="bg-gray-50 font-extrabold">` +
-        `<td class="text-right px-2">TOTAL</td>` +
+        `<td colspan="2" class="text-right px-2">TOTAL</td>` +
         totalCells("y1") + `<td class="no-print"></td>` +
         totalCells("y2") + `<td class="no-print"></td>` +
       `</tr>`;
@@ -4860,6 +4873,10 @@
       const nameTd = document.createElement("td");
       nameTd.className = "name-cell px-2 font-semibold";
       nameTd.textContent = s.name;
+      const noTd = document.createElement("td");
+      noTd.className = "text-center text-gray-500";
+      noTd.textContent = gi + 1;
+      tr.appendChild(noTd);
       tr.appendChild(nameTd);
       tr.insertAdjacentHTML("beforeend",
         slots.map(sl => yearCells(s[sl]) + actionCell(gi, sl, s[sl])).join(""));
@@ -4867,7 +4884,7 @@
     });
     for (let i = pageRows.length; i < PAGE_SIZE; i++) {
       const tr = document.createElement("tr");
-      tr.innerHTML = "<td class='px-2'>&nbsp;</td>" +
+      tr.innerHTML = "<td class='text-center text-gray-400'>" + (startIdx + i + 1) + "</td><td class='px-2'>&nbsp;</td>" +
         ("<td></td>".repeat(7) + "<td class='no-print'></td>").repeat(3);
       body.appendChild(tr);
     }
@@ -4876,7 +4893,7 @@
     const totalCells = slot => FP_FIELDS.map(k => `<td class="text-center font-bold px-0.5">${sum(slot, k)}</td>`).join("");
     foot.innerHTML =
       `<tr class="bg-gray-50 font-extrabold">` +
-        `<td class="text-right px-2">TOTAL</td>` +
+        `<td colspan="2" class="text-right px-2">TOTAL</td>` +
         slots.map(sl => totalCells(sl) + `<td class="no-print"></td>`).join("") +
       `</tr>`;
 
