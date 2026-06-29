@@ -31,7 +31,6 @@
   #sidebar-container { transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
   #sidebar-container.collapsed { width: 5rem !important; }
   #sidebar-container.collapsed .sidebar-text,
-  #sidebar-container.collapsed .sidebar-header,
   #sidebar-container.collapsed .sidebar-brand-expanded,
   #sidebar-container.collapsed .profile-details { display: none !important; }
   #sidebar-container.collapsed .tab-btn {
@@ -231,16 +230,11 @@
   <nav class="flex-1 overflow-y-auto px-4 py-4 space-y-5">
 
     <div class="space-y-1">
-      <p class="text-[9px] font-bold text-[#556358] px-3 uppercase tracking-widest sidebar-header">Overview</p>
       <button onclick="switchTab('dashboard')" id="btn-dashboard" title="Dashboard"
               class="tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold rounded-lg transition theme-sidebar-active">
         <i class="fa-solid fa-gauge-high text-sm shrink-0"></i>
         <span class="sidebar-text">Dashboard</span>
       </button>
-    </div>
-
-    <div class="space-y-1">
-      <p class="text-[9px] font-bold text-[#556358] px-3 uppercase tracking-widest sidebar-header">Maternal Registry</p>
       <button onclick="switchTab('vitamin-a')" id="btn-vitamin-a" title="Vitamin A Distribution"
               class="tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold rounded-lg transition text-[#88948b] hover:text-white hover:bg-white/5">
         <i class="fa-solid fa-capsules text-sm shrink-0"></i>
