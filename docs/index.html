@@ -296,6 +296,11 @@
         <i class="fa-solid fa-bread-slice text-sm shrink-0"></i>
         <span class="sidebar-text">Bakeries</span>
       </button>
+      <button onclick="switchTab('fp')" id="btn-fp" title="Food Production Masterlist"
+              class="tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold rounded-lg transition text-[#88948b] hover:text-white hover:bg-white/5">
+        <i class="fa-solid fa-seedling text-sm shrink-0"></i>
+        <span class="sidebar-text">Food Production</span>
+      </button>
     </div>
 
   </nav>
@@ -2613,6 +2618,198 @@
   </div>
 </div>
 
+        <!-- TAB: FOOD PRODUCTION MASTERLIST (per person, per year, 3-year window) -->
+<section id="tab-fp" class="tab-content hidden flex flex-col gap-4">
+
+  <!-- Toolbar (not printed) -->
+  <div class="no-print bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <div>
+      <h2 class="text-sm font-extrabold text-[#1e293b] uppercase tracking-wider">Food Production</h2>
+      <p class="text-[11px] text-gray-400">Malnourished &amp; household production (per person, per year)</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <input id="fp-search" oninput="resetPage('fp')" type="text" placeholder="Search name…"
+             class="text-xs px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-lime-500 w-40">
+      <select id="fp-filter-barangay" onchange="resetPage('fp')"
+              class="brgy-select text-xs px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-lime-500"></select>
+      <select id="fp-filter-bns" onchange="resetPage('fp')"
+              class="bns-select text-xs px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-lime-500"></select>
+      <select id="fp-filter-range" onchange="resetPage('fp')"
+              class="text-xs px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-lime-500"></select>
+      <button onclick="printFpForm()"
+              class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm">
+        <i class="fa-solid fa-print"></i> Print
+      </button>
+      <button onclick="openFpModal()"
+              class="bg-lime-600 hover:bg-lime-700 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm">
+        <i class="fa-solid fa-plus"></i> Add Record
+      </button>
+    </div>
+  </div>
+
+  <!-- Official printable document -->
+  <div id="fp-official-doc" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 overflow-x-auto">
+
+    <!-- Document header -->
+    <div class="text-center mb-3">
+      <div class="flex items-center justify-center gap-5">
+        <img data-logo="tanjay" alt="Tanjay City Seal" class="w-16 h-16 object-contain">
+        <div class="text-center leading-snug text-[13px] text-black">
+          <p>Republic of the Philippines</p>
+          <p>Province of Negros Oriental</p>
+          <p>City of Tanjay</p>
+        </div>
+        <img data-logo="nnc" alt="National Nutrition Council" class="w-16 h-16 object-contain">
+      </div>
+      <p class="font-extrabold text-[15px] text-black mt-3 tracking-wide">Masterlist of Food Production</p>
+      <p class="font-bold text-[12px] text-black">Barangay: <span id="fp-barangay-label">—</span></p>
+    </div>
+
+    <!-- Official table: NAME | per year [MALNOURISHED(4) + YEAR(3) + Action] x3 -->
+    <table class="official-table w-full border-collapse text-[10px] text-black" style="table-layout:fixed">
+      <colgroup>
+        <col>                                          <!-- NAME absorbs remaining width -->
+        <col span="4" style="width:3.1%">              <!-- y1 UW SUW W SW -->
+        <col span="3" style="width:3.8%">              <!-- y1 POULTRY LIVESTOCK GARDEN -->
+        <col class="no-print" style="width:3%">        <!-- y1 action -->
+        <col span="4" style="width:3.1%">              <!-- y2 -->
+        <col span="3" style="width:3.8%">
+        <col class="no-print" style="width:3%">
+        <col span="4" style="width:3.1%">              <!-- y3 -->
+        <col span="3" style="width:3.8%">
+        <col class="no-print" style="width:3%">
+      </colgroup>
+      <thead>
+        <tr class="bg-gray-50 font-extrabold">
+          <th rowspan="2" class="px-2 py-1 align-middle text-[12px]">NAME</th>
+          <th colspan="4" class="px-1 py-1">MALNOURISHED</th>
+          <th colspan="3" class="px-1 py-1"><span id="fp-year1-label">—</span></th>
+          <th rowspan="2" class="px-1 py-1 align-middle no-print">Action</th>
+          <th colspan="4" class="px-1 py-1">MALNOURISHED</th>
+          <th colspan="3" class="px-1 py-1"><span id="fp-year2-label">—</span></th>
+          <th rowspan="2" class="px-1 py-1 align-middle no-print">Action</th>
+          <th colspan="4" class="px-1 py-1">MALNOURISHED</th>
+          <th colspan="3" class="px-1 py-1"><span id="fp-year3-label">—</span></th>
+          <th rowspan="2" class="px-1 py-1 align-middle no-print">Action</th>
+        </tr>
+        <tr class="bg-gray-50 text-[8px] font-bold">
+          <th class="px-0.5 py-0.5">UW</th><th class="px-0.5 py-0.5">SUW</th><th class="px-0.5 py-0.5">W</th><th class="px-0.5 py-0.5">SW</th>
+          <th class="px-0.5 py-0.5">POUL-<br>TRY</th><th class="px-0.5 py-0.5">LIVE-<br>STOCK</th><th class="px-0.5 py-0.5">GAR-<br>DEN</th>
+          <th class="px-0.5 py-0.5">UW</th><th class="px-0.5 py-0.5">SUW</th><th class="px-0.5 py-0.5">W</th><th class="px-0.5 py-0.5">SW</th>
+          <th class="px-0.5 py-0.5">POUL-<br>TRY</th><th class="px-0.5 py-0.5">LIVE-<br>STOCK</th><th class="px-0.5 py-0.5">GAR-<br>DEN</th>
+          <th class="px-0.5 py-0.5">UW</th><th class="px-0.5 py-0.5">SUW</th><th class="px-0.5 py-0.5">W</th><th class="px-0.5 py-0.5">SW</th>
+          <th class="px-0.5 py-0.5">POUL-<br>TRY</th><th class="px-0.5 py-0.5">LIVE-<br>STOCK</th><th class="px-0.5 py-0.5">GAR-<br>DEN</th>
+        </tr>
+      </thead>
+      <tbody id="fp-official-body"></tbody>
+      <tfoot id="fp-official-foot"></tfoot>
+    </table>
+
+    <!-- Signatory footer (3 signers: Prepared / Reviewed / Noted) -->
+    <div class="sig-grid grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 text-[11px] text-black">
+      <div>
+        <p>Prepared by:</p>
+        <div class="mt-6 text-center">
+          <p id="fp-sig-bns" class="border-t border-black pt-0.5 font-bold">&nbsp;</p>
+          <p>BNS</p>
+        </div>
+      </div>
+      <div>
+        <p>Reviewed by:</p>
+        <div class="mt-6 text-center">
+          <p class="font-bold border-t border-black pt-0.5">STEPHANIE R. REYES, RND</p>
+          <p>NO II/CNAO</p>
+        </div>
+      </div>
+      <div></div><!-- spacer to push "Noted by" to the far right, matching the official form -->
+      <div>
+        <p>Noted by:</p>
+        <div class="mt-6 text-center">
+          <p class="font-bold border-t border-black pt-0.5">RACHEL G. CUEVAS</p>
+          <p>BNC CHAIRMAN</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination (not printed) -->
+  <div class="no-print flex items-center justify-between gap-3 text-xs text-gray-500 px-1">
+    <span id="fp-page-info">—</span>
+    <div class="flex gap-2">
+      <button onclick="changePage('fp',-1)" class="px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 font-bold text-gray-600">‹ Prev</button>
+      <button onclick="changePage('fp',1)" class="px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 font-bold text-gray-600">Next ›</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOD PRODUCTION MODAL (one person, one year) -->
+<div id="fp-modal" class="hidden fixed inset-0 z-[10000] bg-black/50 flex items-center justify-center p-4">
+  <div class="bg-white max-w-2xl w-full rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto">
+    <div class="flex items-center justify-between p-5 border-b border-gray-100">
+      <div class="flex items-center gap-2.5">
+        <img data-logo="tanjay" alt="" class="w-8 h-8 object-contain">
+        <img data-logo="nnc" alt="" class="w-8 h-8 object-contain">
+        <h3 id="fp-modal-title" class="text-base font-extrabold text-[#1e293b]">Add Record</h3>
+      </div>
+      <button onclick="closeFpModal()" class="text-gray-400 hover:text-gray-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+    </div>
+    <form id="fp-form" onsubmit="saveFpRecord(event)" class="p-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input type="hidden" id="fp-modal-id">
+
+      <div>
+        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Name</label>
+        <input type="text" id="fp-modal-name" required placeholder="e.g. Juan Dela Cruz" class="w-full text-sm px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-lime-500">
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Barangay</label>
+        <select id="fp-modal-barangay" required class="brgy-select w-full text-sm px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-lime-500"></select>
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Year</label>
+        <select id="fp-modal-year" required class="w-full text-sm px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-lime-500"></select>
+      </div>
+
+      <div class="md:col-span-2">
+        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-2">Malnourished</label>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm">
+          <label class="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg cursor-pointer">
+            <input type="checkbox" id="fp-modal-uw" class="accent-lime-600"> UW <span class="text-[10px] text-gray-400">Underweight</span>
+          </label>
+          <label class="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg cursor-pointer">
+            <input type="checkbox" id="fp-modal-suw" class="accent-lime-600"> SUW <span class="text-[10px] text-gray-400">Sev. UW</span>
+          </label>
+          <label class="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg cursor-pointer">
+            <input type="checkbox" id="fp-modal-w" class="accent-lime-600"> W <span class="text-[10px] text-gray-400">Wasted</span>
+          </label>
+          <label class="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg cursor-pointer">
+            <input type="checkbox" id="fp-modal-sw" class="accent-lime-600"> SW <span class="text-[10px] text-gray-400">Sev. Wasted</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="md:col-span-2">
+        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-2">Food Production</label>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
+          <label class="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg cursor-pointer">
+            <input type="checkbox" id="fp-modal-poultry" class="accent-lime-600"> Poultry
+          </label>
+          <label class="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg cursor-pointer">
+            <input type="checkbox" id="fp-modal-livestock" class="accent-lime-600"> Livestock
+          </label>
+          <label class="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg cursor-pointer">
+            <input type="checkbox" id="fp-modal-garden" class="accent-lime-600"> Garden
+          </label>
+        </div>
+      </div>
+
+      <div class="md:col-span-2 flex justify-end gap-2 pt-2 border-t border-gray-100">
+        <button type="button" onclick="closeFpModal()" class="text-xs font-bold text-gray-500 px-4 py-2 rounded-lg hover:bg-gray-100">Cancel</button>
+        <button type="submit" id="fp-save-btn" class="bg-lime-600 hover:bg-lime-700 text-white text-xs font-bold px-5 py-2 rounded-lg shadow-sm">Save Record</button>
+      </div>
+    </form>
+  </div>
+</div>
+
       </main>
 
     </div><!-- /content column (opened in Sidebar.html) -->
@@ -2674,6 +2871,7 @@
   let mnpDatabase = [];
   let sariDatabase = [];
   let bakeryDatabase = [];
+  let fpDatabase = [];
   let currentUser = null;
   let pendingAuthEmail = "";
   let bmiChartInstance = null;
@@ -2758,8 +2956,8 @@
    *  PAGINATION (22 rows per page, like the official form)
    * ============================================================ */
   const PAGE_SIZE = 22;
-  const pageNum = { vit: 1, mms: 1, anmum: 1, iron: 1, wifa: 1, lns: 1, cal: 1, feso4: 1, mnp: 1, sari: 1, bakery: 1 };
-  const formTotalPages = { vit: 1, mms: 1, anmum: 1, iron: 1, wifa: 1, lns: 1, cal: 1, feso4: 1, mnp: 1, sari: 1, bakery: 1 };
+  const pageNum = { vit: 1, mms: 1, anmum: 1, iron: 1, wifa: 1, lns: 1, cal: 1, feso4: 1, mnp: 1, sari: 1, bakery: 1, fp: 1 };
+  const formTotalPages = { vit: 1, mms: 1, anmum: 1, iron: 1, wifa: 1, lns: 1, cal: 1, feso4: 1, mnp: 1, sari: 1, bakery: 1, fp: 1 };
 
   function rerenderForm(prefix) {
     if (prefix === "vit") renderVitaminAOfficial();
@@ -2773,6 +2971,7 @@
     else if (prefix === "mnp") renderMnpOfficial();
     else if (prefix === "sari") renderSariOfficial();
     else if (prefix === "bakery") renderBakeryOfficial();
+    else if (prefix === "fp") renderFpOfficial();
   }
   // Prev / Next buttons
   function changePage(prefix, delta) {
@@ -2830,7 +3029,7 @@
   window.addEventListener("DOMContentLoaded", () => {
     startClock();
     // Move form modals to <body> so their fixed backdrop covers the whole screen
-    ["vitamin-a-modal","mms-modal","anmum-modal","iron-modal","wifa-modal","lns-modal","calcium-modal","feso4-modal","mnp-modal","sari-modal","bakery-modal"].forEach(id => {
+    ["vitamin-a-modal","mms-modal","anmum-modal","iron-modal","wifa-modal","lns-modal","calcium-modal","feso4-modal","mnp-modal","sari-modal","bakery-modal","fp-modal"].forEach(id => {
       const m = document.getElementById(id);
       if (m && m.parentElement !== document.body) document.body.appendChild(m);
     });
@@ -2843,6 +3042,8 @@
     populateSariYearOptions();
     populateBakeryRangeOptions();
     populateBakeryYearOptions();
+    populateFpRangeOptions();
+    populateFpYearOptions();
 
     const saved = sessionStorage.getItem("tnc_session_user");
     if (saved) {
@@ -3052,9 +3253,9 @@
     }
 
     // Lock barangay/BNS pickers for BNS to their territory
-    ["vit-filter-barangay","mms-filter-barangay","anmum-filter-barangay","iron-filter-barangay","wifa-filter-barangay","lns-filter-barangay","cal-filter-barangay","feso4-filter-barangay","mnp-filter-barangay","sari-filter-barangay","bakery-filter-barangay",
-     "vit-filter-bns","mms-filter-bns","anmum-filter-bns","iron-filter-bns","wifa-filter-bns","lns-filter-bns","cal-filter-bns","feso4-filter-bns","mnp-filter-bns","sari-filter-bns","bakery-filter-bns",
-     "vit-modal-barangay","mms-modal-barangay","anmum-modal-barangay","iron-modal-barangay","wifa-modal-barangay","lns-modal-barangay","cal-modal-barangay","feso4-modal-barangay","mnp-modal-barangay","sari-modal-barangay","bakery-modal-barangay"].forEach(id => {
+    ["vit-filter-barangay","mms-filter-barangay","anmum-filter-barangay","iron-filter-barangay","wifa-filter-barangay","lns-filter-barangay","cal-filter-barangay","feso4-filter-barangay","mnp-filter-barangay","sari-filter-barangay","bakery-filter-barangay","fp-filter-barangay",
+     "vit-filter-bns","mms-filter-bns","anmum-filter-bns","iron-filter-bns","wifa-filter-bns","lns-filter-bns","cal-filter-bns","feso4-filter-bns","mnp-filter-bns","sari-filter-bns","bakery-filter-bns","fp-filter-bns",
+     "vit-modal-barangay","mms-modal-barangay","anmum-modal-barangay","iron-modal-barangay","wifa-modal-barangay","lns-modal-barangay","cal-modal-barangay","feso4-modal-barangay","mnp-modal-barangay","sari-modal-barangay","bakery-modal-barangay","fp-modal-barangay"].forEach(id => {
       const el = document.getElementById(id); if (!el) return;
       if (isBNS) { el.value = currentUser.barangay; el.disabled = true; } else { el.disabled = false; }
     });
@@ -3196,7 +3397,10 @@
                       google.script.run.withSuccessHandler(s10 => {
                         const r10 = JSON.parse(s10); if (r10.success) sariDatabase = r10.records;
                         google.script.run.withSuccessHandler(s11 => {
-                          const r11 = JSON.parse(s11); if (r11.success) bakeryDatabase = r11.records; refreshAppView();
+                          const r11 = JSON.parse(s11); if (r11.success) bakeryDatabase = r11.records;
+                          google.script.run.withSuccessHandler(s12 => {
+                            const r12 = JSON.parse(s12); if (r12.success) fpDatabase = r12.records; refreshAppView();
+                          }).fetchFoodProdRecords(currentUser.email);
                         }).fetchBakeryRecords(currentUser.email);
                       }).fetchSariRecords(currentUser.email);
                     }).fetchMnpRecords(currentUser.email);
@@ -3225,6 +3429,7 @@
     renderMnpOfficial();
     renderSariOfficial();
     renderBakeryOfficial();
+    renderFpOfficial();
   }
 
   /* ============================================================
@@ -3241,7 +3446,7 @@
     const active = document.getElementById("btn-" + tabId);
     if (active) { active.classList.add("theme-sidebar-active"); active.classList.remove("text-[#88948b]","hover:text-white","hover:bg-white/5"); }
 
-    const titles = { "dashboard":"Dashboard", "vitamin-a":"Vitamin A Distribution", "mms":"MMS Distribution", "anmum":"Anmum Milk Distribution", "iron":"Multi Iron Syrup (6-59 mos)", "wifa":"WIFA — Female Learners", "lns":"LNS-SQ (6-59 mos)", "calcium":"Calcium for Pregnant Women", "feso4":"Iron w/ Folic Acid (FeSO4)", "mnp":"Micronutrient Powder (6-59 mos)", "sari":"Sari-Sari Stores Masterlist", "bakery":"Bakeries Masterlist" };
+    const titles = { "dashboard":"Dashboard", "vitamin-a":"Vitamin A Distribution", "mms":"MMS Distribution", "anmum":"Anmum Milk Distribution", "iron":"Multi Iron Syrup (6-59 mos)", "wifa":"WIFA — Female Learners", "lns":"LNS-SQ (6-59 mos)", "calcium":"Calcium for Pregnant Women", "feso4":"Iron w/ Folic Acid (FeSO4)", "mnp":"Micronutrient Powder (6-59 mos)", "sari":"Sari-Sari Stores Masterlist", "bakery":"Bakeries Masterlist", "fp":"Food Production Masterlist" };
     document.getElementById("header-workspace-title").innerText = titles[tabId] || tabId;
 
     if (tabId === "dashboard") setTimeout(renderCharts, 100);
@@ -3478,7 +3683,7 @@
   function renderCalciumOfficial() { renderOfficialForm("cal"); }
   function renderFeso4Official() { renderOfficialForm("feso4"); }
 
-  const PREFIX_TAB = { vit: "vitamin-a", mms: "mms", anmum: "anmum", iron: "iron", wifa: "wifa", lns: "lns", cal: "calcium", feso4: "feso4", mnp: "mnp", sari: "sari", bakery: "bakery" };
+  const PREFIX_TAB = { vit: "vitamin-a", mms: "mms", anmum: "anmum", iron: "iron", wifa: "wifa", lns: "lns", cal: "calcium", feso4: "feso4", mnp: "mnp", sari: "sari", bakery: "bakery", fp: "fp" };
   // Print the entire filtered set: each page is a complete form
   // (header + 22 rows + signatories), with a page break between pages.
   function printOfficialForm(prefix) {
@@ -4580,10 +4785,190 @@
       .withSuccessHandler(s => {
         const r = JSON.parse(s);
         if (r.success) bakeryDatabase = r.records; else showToast("Bakeries: " + r.message, "error");
+        fetchFpRegistryFromServer();
+      })
+      .withFailureHandler(e => { showToast("Bakeries connection failed: " + e.message, "error"); fetchFpRegistryFromServer(); })
+      .fetchBakeryRecords(currentUser.email);
+  }
+
+  /* ============================================================
+   *  FOOD PRODUCTION — masterlist (per person, per year, 3-year window)
+   * ============================================================ */
+  let fpRows = [];
+  const FP_FIELDS = ["uw", "suw", "w", "sw", "poultry", "livestock", "garden"];
+
+  function fpSetText(id, v) { const e = document.getElementById(id); if (e) e.textContent = v; }
+
+  function getFpRange() {
+    const start = parseInt(document.getElementById("fp-filter-range") && document.getElementById("fp-filter-range").value) || 2024;
+    return { y1: start, y2: start + 1, y3: start + 2 };
+  }
+
+  function populateFpRangeOptions() {
+    const sel = document.getElementById("fp-filter-range");
+    if (!sel) return;
+    sel.innerHTML = "";
+    for (let y = 2024; y <= 2033; y++) {
+      const o = document.createElement("option");
+      o.value = y; o.textContent = y + " \u2013 " + (y + 2);
+      sel.appendChild(o);
+    }
+    const start = new Date().getFullYear() - 2;
+    sel.value = (start >= 2024 && start <= 2033) ? String(start) : "2024";
+  }
+
+  function populateFpYearOptions() {
+    const sel = document.getElementById("fp-modal-year");
+    if (!sel) return;
+    sel.innerHTML = "";
+    for (let y = 2024; y <= 2035; y++) {
+      const o = document.createElement("option");
+      o.value = y; o.textContent = y;
+      sel.appendChild(o);
+    }
+  }
+
+  function renderFpOfficial() {
+    const body = document.getElementById("fp-official-body");
+    const foot = document.getElementById("fp-official-foot");
+    if (!body) return;
+    const range = getFpRange(), years = [range.y1, range.y2, range.y3], slots = ["y1", "y2", "y3"];
+    fpSetText("fp-year1-label", range.y1);
+    fpSetText("fp-year2-label", range.y2);
+    fpSetText("fp-year3-label", range.y3);
+
+    const brgy = (document.getElementById("fp-filter-barangay") || {}).value || "";
+    const bnsBrgy = (document.getElementById("fp-filter-bns") || {}).value || "";
+    const q = ((document.getElementById("fp-search") || {}).value || "").toLowerCase();
+    const effBrgy = bnsBrgy || brgy;
+    fpSetText("fp-barangay-label", effBrgy || "All Barangays");
+
+    let list = fpDatabase.filter(r =>
+      (!effBrgy || r.barangay === effBrgy) &&
+      (!q || r.name.toLowerCase().includes(q)) &&
+      (years.indexOf(r.year) > -1));
+
+    const map = {};
+    list.forEach(r => {
+      const key = r.barangay + "||" + r.name.toLowerCase();
+      if (!map[key]) map[key] = { name: r.name, barangay: r.barangay, y1: null, y2: null, y3: null };
+      const idx = years.indexOf(r.year);
+      map[key][slots[idx]] = r;
+    });
+    fpRows = Object.values(map).sort((a, b) => a.name.localeCompare(b.name));
+
+    const total = fpRows.length;
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    let page = Math.min(pageNum.fp || 1, totalPages); pageNum.fp = page;
+    const startIdx = (page - 1) * PAGE_SIZE;
+    const pageRows = fpRows.slice(startIdx, startIdx + PAGE_SIZE);
+
+    const chk = on => on ? "\u2713" : "";
+    const yearCells = rec => FP_FIELDS.map(k => `<td class="text-center px-0.5">${chk(rec && rec[k])}</td>`).join("");
+    const actionCell = (gi, slot, rec) =>
+      `<td class="no-print whitespace-nowrap text-center px-0.5">` +
+        `<button onclick="editFpRow(${gi},'${slot}')" class="text-lime-600 hover:text-lime-800 px-0.5" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>` +
+        (rec ? `<button onclick="deleteFpRow(${gi},'${slot}')" class="text-rose-500 hover:text-rose-700 px-0.5" title="Delete"><i class="fa-solid fa-trash"></i></button>` : "") +
+      `</td>`;
+
+    body.innerHTML = "";
+    pageRows.forEach((s, i) => {
+      const gi = startIdx + i;
+      const tr = document.createElement("tr");
+      const nameTd = document.createElement("td");
+      nameTd.className = "name-cell px-2 font-semibold";
+      nameTd.textContent = s.name;
+      tr.appendChild(nameTd);
+      tr.insertAdjacentHTML("beforeend",
+        slots.map(sl => yearCells(s[sl]) + actionCell(gi, sl, s[sl])).join(""));
+      body.appendChild(tr);
+    });
+    for (let i = pageRows.length; i < PAGE_SIZE; i++) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = "<td class='px-2'>&nbsp;</td>" +
+        ("<td></td>".repeat(7) + "<td class='no-print'></td>").repeat(3);
+      body.appendChild(tr);
+    }
+
+    const sum = (slot, k) => fpRows.reduce((n, s) => n + (s[slot] && s[slot][k] ? 1 : 0), 0);
+    const totalCells = slot => FP_FIELDS.map(k => `<td class="text-center font-bold px-0.5">${sum(slot, k)}</td>`).join("");
+    foot.innerHTML =
+      `<tr class="bg-gray-50 font-extrabold">` +
+        `<td class="text-right px-2">TOTAL</td>` +
+        slots.map(sl => totalCells(sl) + `<td class="no-print"></td>`).join("") +
+      `</tr>`;
+
+    updatePager("fp", page, totalPages, total, startIdx);
+    applyBnsSignatory("fp");
+  }
+
+  function editFpRow(idx, slot) {
+    const s = fpRows[idx]; if (!s) return;
+    openFpModal(s.name, s.barangay, getFpRange()[slot], s[slot]);
+  }
+  function deleteFpRow(idx, slot) {
+    const s = fpRows[idx]; if (!s) return;
+    const rec = s[slot];
+    if (!rec) { showToast("No entry to delete for that year.", "error"); return; }
+    if (!confirm("Permanently delete this record?")) return;
+    if (!inGAS()) { fpDatabase = fpDatabase.filter(x => x.id !== rec.id); renderFpOfficial(); return; }
+    google.script.run
+      .withSuccessHandler(res => { showToast(res.message, res.success ? "success" : "error"); if (res.success) fetchFpRegistryFromServer(); })
+      .withFailureHandler(e => showToast("Delete failed: " + e.message, "error"))
+      .deleteFoodProdRecordFromBackend(rec.id, currentUser.email);
+  }
+
+  function openFpModal(name, barangay, year, rec) {
+    const range = getFpRange();
+    document.getElementById("fp-modal-id").value = rec ? rec.id : "";
+    document.getElementById("fp-modal-name").value = name || "";
+    document.getElementById("fp-modal-barangay").value = barangay ||
+      ((document.getElementById("fp-filter-barangay") || {}).value || "");
+    document.getElementById("fp-modal-year").value = year || range.y1;
+    FP_FIELDS.forEach(k => { document.getElementById("fp-modal-" + k).checked = !!(rec && rec[k]); });
+    document.getElementById("fp-modal-title").textContent = rec ? "Edit Record" : "Add Record";
+    document.getElementById("fp-modal").classList.remove("hidden");
+  }
+  function closeFpModal() { document.getElementById("fp-modal").classList.add("hidden"); }
+
+  function saveFpRecord(event) {
+    event.preventDefault();
+    const record = {
+      id:       document.getElementById("fp-modal-id").value || "",
+      name:     document.getElementById("fp-modal-name").value.trim(),
+      barangay: document.getElementById("fp-modal-barangay").value,
+      year:     parseInt(document.getElementById("fp-modal-year").value) || 0
+    };
+    FP_FIELDS.forEach(k => { record[k] = document.getElementById("fp-modal-" + k).checked; });
+    if (!record.name || !record.barangay || !record.year) { showToast("Name, barangay and year are required.", "error"); return; }
+
+    const btn = document.getElementById("fp-save-btn");
+    btn.disabled = true; btn.innerText = "Saving\u2026";
+    const done = ok => { btn.disabled = false; btn.innerText = "Save Record"; if (ok) closeFpModal(); };
+
+    if (!inGAS()) {
+      if (record.id) { const ix = fpDatabase.findIndex(x => x.id === record.id); if (ix > -1) fpDatabase[ix] = record; }
+      else { record.id = "F" + Date.now(); fpDatabase.push(record); }
+      showToast("Saved (preview mode)."); done(true); renderFpOfficial(); return;
+    }
+    google.script.run
+      .withSuccessHandler(res => { showToast(res.message, res.success ? "success" : "error"); done(res.success); if (res.success) fetchFpRegistryFromServer(); })
+      .withFailureHandler(e => { showToast("Save failed: " + e.message, "error"); done(false); })
+      .addOrUpdateFoodProdRecord(record, currentUser.email);
+  }
+
+  function printFpForm() { printOfficialForm("fp"); }
+
+  function fetchFpRegistryFromServer() {
+    if (!inGAS()) { refreshAppView(); return; }
+    google.script.run
+      .withSuccessHandler(s => {
+        const r = JSON.parse(s);
+        if (r.success) fpDatabase = r.records; else showToast("Food Production: " + r.message, "error");
         refreshAppView();
       })
-      .withFailureHandler(e => { showToast("Bakeries connection failed: " + e.message, "error"); refreshAppView(); })
-      .fetchBakeryRecords(currentUser.email);
+      .withFailureHandler(e => { showToast("Food Production connection failed: " + e.message, "error"); refreshAppView(); })
+      .fetchFoodProdRecords(currentUser.email);
   }
 
   /* ============================================================
