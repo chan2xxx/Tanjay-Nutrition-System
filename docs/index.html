@@ -2286,7 +2286,14 @@
     </div>
 
     <!-- Official table: NAME | YEAR1 (5 products) | [Action] | YEAR2 (5 products) | [Action] -->
-    <table class="official-table w-full border-collapse text-[10px] text-black">
+    <table class="official-table w-full border-collapse text-[10px] text-black" style="table-layout:fixed">
+      <colgroup>
+        <col>                                          <!-- NAME absorbs remaining width -->
+        <col span="5" style="width:5.5%">              <!-- year 1 products -->
+        <col class="no-print" style="width:4%">        <!-- year 1 action (collapses on print) -->
+        <col span="5" style="width:5.5%">              <!-- year 2 products -->
+        <col class="no-print" style="width:4%">        <!-- year 2 action (collapses on print) -->
+      </colgroup>
       <thead>
         <tr class="bg-gray-50">
           <th rowspan="3" class="px-2 py-1 align-middle font-extrabold text-[12px]">NAME</th>
@@ -4098,7 +4105,7 @@
     });
     for (let i = pageRows.length; i < PAGE_SIZE; i++) {
       const tr = document.createElement("tr");
-      tr.innerHTML = "<td class='px-2 py-2'>&nbsp;</td>" +
+      tr.innerHTML = "<td class='px-2 py-1'>&nbsp;</td>" +
         "<td></td><td></td><td></td><td></td><td></td><td class='no-print'></td>" +
         "<td></td><td></td><td></td><td></td><td></td><td class='no-print'></td>";
       body.appendChild(tr);
