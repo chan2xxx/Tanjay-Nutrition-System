@@ -356,6 +356,40 @@
     <span class="bg-[#242c26] text-[#e5dfcf] text-[9px] uppercase font-black px-2.5 py-1 rounded-full tracking-wider">BNS Lock</span>
   </div>
 
+  <!-- Dashboard filters -->
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+    <div class="relative bg-[#2e7d32] rounded-xl p-3.5 shadow-sm overflow-hidden">
+      <p class="text-white font-bold text-sm mb-2">BNS Name</p>
+      <select id="dash-filter-bns" onchange="refreshDashboard()" class="bns-select w-full text-xs px-3 py-2 rounded-lg border-0 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-white/60"></select>
+      <i class="fa-solid fa-user-shield absolute bottom-2 right-3 text-white/25 text-lg"></i>
+    </div>
+    <div class="relative bg-[#2e7d32] rounded-xl p-3.5 shadow-sm overflow-hidden">
+      <p class="text-white font-bold text-sm mb-2">Barangay</p>
+      <select id="dash-filter-barangay" onchange="refreshDashboard()" class="brgy-select w-full text-xs px-3 py-2 rounded-lg border-0 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-white/60"></select>
+      <i class="fa-solid fa-location-dot absolute bottom-2 right-3 text-white/25 text-lg"></i>
+    </div>
+    <div class="relative bg-[#2e7d32] rounded-xl p-3.5 shadow-sm overflow-hidden">
+      <p class="text-white font-bold text-sm mb-2">Date</p>
+      <select id="dash-filter-date" onchange="refreshDashboard()" class="w-full text-xs px-3 py-2 rounded-lg border-0 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-white/60"><option value="">All Dates</option></select>
+      <i class="fa-solid fa-calendar-day absolute bottom-2 right-3 text-white/25 text-lg"></i>
+    </div>
+    <div class="relative bg-[#2e7d32] rounded-xl p-3.5 shadow-sm overflow-hidden">
+      <p class="text-white font-bold text-sm mb-2">Name of Mother</p>
+      <select id="dash-filter-mother" onchange="refreshDashboard()" class="w-full text-xs px-3 py-2 rounded-lg border-0 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-white/60"><option value="">All Mothers</option></select>
+      <i class="fa-solid fa-person-pregnant absolute bottom-2 right-3 text-white/25 text-lg"></i>
+    </div>
+    <div class="relative bg-[#2e7d32] rounded-xl p-3.5 shadow-sm overflow-hidden">
+      <p class="text-white font-bold text-sm mb-2">Name of Child</p>
+      <select id="dash-filter-child" onchange="refreshDashboard()" class="w-full text-xs px-3 py-2 rounded-lg border-0 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-white/60"><option value="">All Children</option></select>
+      <i class="fa-solid fa-child absolute bottom-2 right-3 text-white/25 text-lg"></i>
+    </div>
+  </div>
+  <div class="no-print -mt-1">
+    <button onclick="resetDashboardFilters()" class="text-[11px] font-bold text-[#2e7d32] hover:underline flex items-center gap-1.5">
+      <i class="fa-solid fa-rotate-left text-[10px]"></i> Reset filters
+    </button>
+  </div>
+
   <!-- Metric cards -->
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
     <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
@@ -3240,8 +3274,8 @@
     }
 
     // Lock barangay/BNS pickers for BNS to their territory
-    ["vit-filter-barangay","mms-filter-barangay","anmum-filter-barangay","iron-filter-barangay","wifa-filter-barangay","lns-filter-barangay","cal-filter-barangay","feso4-filter-barangay","mnp-filter-barangay","sari-filter-barangay","bakery-filter-barangay","fp-filter-barangay",
-     "vit-filter-bns","mms-filter-bns","anmum-filter-bns","iron-filter-bns","wifa-filter-bns","lns-filter-bns","cal-filter-bns","feso4-filter-bns","mnp-filter-bns","sari-filter-bns","bakery-filter-bns","fp-filter-bns",
+    ["vit-filter-barangay","mms-filter-barangay","anmum-filter-barangay","iron-filter-barangay","wifa-filter-barangay","lns-filter-barangay","cal-filter-barangay","feso4-filter-barangay","mnp-filter-barangay","sari-filter-barangay","bakery-filter-barangay","fp-filter-barangay","dash-filter-barangay",
+     "vit-filter-bns","mms-filter-bns","anmum-filter-bns","iron-filter-bns","wifa-filter-bns","lns-filter-bns","cal-filter-bns","feso4-filter-bns","mnp-filter-bns","sari-filter-bns","bakery-filter-bns","fp-filter-bns","dash-filter-bns",
      "vit-modal-barangay","mms-modal-barangay","anmum-modal-barangay","iron-modal-barangay","wifa-modal-barangay","lns-modal-barangay","cal-modal-barangay","feso4-modal-barangay","mnp-modal-barangay","sari-modal-barangay","bakery-modal-barangay","fp-modal-barangay"].forEach(id => {
       const el = document.getElementById(id); if (!el) return;
       if (isBNS) { el.value = currentUser.barangay; el.disabled = true; } else { el.disabled = false; }
@@ -3403,6 +3437,7 @@
   function syncData() { showToast("Syncing with cloud…"); fetchRegistryFromServer(); }
 
   function refreshAppView() {
+    populateDashboardFilterOptions();
     updateDashboardStats();
     renderCharts();
     renderVitaminAOfficial();
@@ -3496,10 +3531,73 @@
   /* ============================================================
    *  DASHBOARD
    * ============================================================ */
+  /* ============================================================
+   *  DASHBOARD FILTERS (BNS, Barangay, Date, Mother, Child)
+   * ============================================================ */
+  function dashVal(id) { const e = document.getElementById(id); return e ? e.value : ""; }
+
+  function getDashboardScope() {
+    // BNS, Barangay and Child selects all resolve to a barangay value
+    const effBarangay = dashVal("dash-filter-barangay") || dashVal("dash-filter-bns") || dashVal("dash-filter-child");
+    return { effBarangay, dateV: dashVal("dash-filter-date"), mother: dashVal("dash-filter-mother") };
+  }
+
+  function dashFilter(list) {
+    const f = getDashboardScope();
+    return list.filter(r =>
+      (!f.effBarangay || r.barangay === f.effBarangay) &&
+      (!f.dateV || (r.date || "").slice(0, 10) === f.dateV) &&
+      (!f.mother || (r.name || "") === f.mother));
+  }
+
+  function dashDateLabel(d) {
+    const M = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const p = d.split("-"); return M[(+p[1]) - 1] + " " + (+p[2]) + ", " + p[0];
+  }
+
+  function dashFillSelect(id, allLabel, opts) {
+    const sel = document.getElementById(id); if (!sel) return;
+    const prev = sel.value;
+    sel.innerHTML = '<option value="">' + allLabel + "</option>";
+    opts.forEach(o => { const el = document.createElement("option"); el.value = o.value; el.textContent = o.label; sel.appendChild(el); });
+    if (prev && Array.from(sel.options).some(o => o.value === prev)) sel.value = prev;
+  }
+
+  function populateDashboardFilterOptions() {
+    const maternal = vitaminADatabase.concat(mmsDatabase).concat(anmumDatabase).concat(calciumDatabase).concat(feso4Database);
+    const children = ironDatabase.concat(lnsDatabase).concat(mnpDatabase);
+
+    const dates = Array.from(new Set(maternal.map(r => (r.date || "").slice(0, 10)).filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))));
+    dates.sort((a, b) => b.localeCompare(a));
+    dashFillSelect("dash-filter-date", "All Dates", dates.map(d => ({ value: d, label: dashDateLabel(d) })));
+
+    const mothers = Array.from(new Set(maternal.map(r => (r.name || "").trim()).filter(Boolean)));
+    mothers.sort((a, b) => a.localeCompare(b));
+    dashFillSelect("dash-filter-mother", "All Mothers", mothers.map(n => ({ value: n, label: n })));
+
+    const seen = new Set(), childOpts = [];
+    children.forEach(r => {
+      const nm = (r.name || "").trim(); if (!nm) return;
+      const key = nm.toLowerCase() + "|" + r.barangay;
+      if (seen.has(key)) return; seen.add(key);
+      childOpts.push({ value: r.barangay, label: nm });
+    });
+    childOpts.sort((a, b) => a.label.localeCompare(b.label));
+    dashFillSelect("dash-filter-child", "All Children", childOpts);
+  }
+
+  function refreshDashboard() { updateDashboardStats(); renderCharts(); }
+
+  function resetDashboardFilters() {
+    ["dash-filter-bns","dash-filter-barangay","dash-filter-date","dash-filter-mother","dash-filter-child"]
+      .forEach(id => { const e = document.getElementById(id); if (e && !e.disabled) e.value = ""; });
+    refreshDashboard();
+  }
+
   function updateDashboardStats() {
-    const all = vitaminADatabase.concat(mmsDatabase).concat(anmumDatabase).concat(calciumDatabase).concat(feso4Database);
-    document.getElementById("stat-vita").innerText = vitaminADatabase.length;
-    document.getElementById("stat-mms").innerText = mmsDatabase.length;
+    const all = dashFilter(vitaminADatabase.concat(mmsDatabase).concat(anmumDatabase).concat(calciumDatabase).concat(feso4Database));
+    document.getElementById("stat-vita").innerText = dashFilter(vitaminADatabase).length;
+    document.getElementById("stat-mms").innerText = dashFilter(mmsDatabase).length;
 
     const names = new Set(all.map(r => (r.name || "").toLowerCase()).filter(Boolean));
     document.getElementById("stat-mothers").innerText = names.size;
@@ -3508,7 +3606,7 @@
 
   function renderCharts() {
     if (typeof Chart === "undefined") return;
-    const all = vitaminADatabase.concat(mmsDatabase).concat(anmumDatabase).concat(calciumDatabase).concat(feso4Database);
+    const all = dashFilter(vitaminADatabase.concat(mmsDatabase).concat(anmumDatabase).concat(calciumDatabase).concat(feso4Database));
 
     // BMI doughnut (5 official categories, derived from BMI)
     const order = ["SUW", "UW", "N", "OW", "OB"];
