@@ -3052,20 +3052,41 @@
   <div id="toast-container" class="fixed bottom-5 right-5 z-[9999] flex flex-col gap-2 items-end pointer-events-none"></div>
 
   <!-- CLIENT LOGIC -->
-    <!-- ===== Static-mode transport (GitHub Pages -> GAS API) ===== -->
+    <!-- ===== Static-mode transport (GitHub Pages -> GAS API) — hardened ===== -->
   <script>
     const GAS_API_URL = "https://script.google.com/macros/s/AKfycbyDVaGRxz5kXXhBCWKf0aBNnMLmLQ2Wn103jPpKUL9PjZQ2qPz5Y-NPUx3YzjYgvDl9dg/exec";
     (function () {
+      var queue = [], active = 0, MAX_CONCURRENT = 2, MAX_RETRY = 4;
+
+      function drain() {
+        while (active < MAX_CONCURRENT && queue.length) { var job = queue.shift(); active++; job(); }
+      }
+      function release() { active--; drain(); }
+
       function callApi(action, argsLike, ctx) {
         var args = Array.prototype.slice.call(argsLike);
-        fetch(GAS_API_URL, { method: "POST", body: JSON.stringify({ action: action, args: args }) })
-        .then(function (r) { return r.json(); })
-        .then(function (env) {
-          if (env && env.ok) { if (ctx.success) ctx.success(env.result); }
-          else { if (ctx.failure) ctx.failure(new Error((env && env.error) || "API error")); }
-        })
-        .catch(function (err) { if (ctx.failure) ctx.failure(err); });
+        queue.push(function () {
+          var attempt = 0;
+          function go() {
+            attempt++;
+            fetch(GAS_API_URL, { method: "POST", body: JSON.stringify({ action: action, args: args }) })
+              .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+              .then(function (env) {
+                release();
+                if (env && env.ok) { if (ctx.success) ctx.success(env.result); }
+                else { if (ctx.failure) ctx.failure(new Error((env && env.error) || "API error")); }
+              })
+              .catch(function (err) {
+                // Transient GAS/CORS/network failure: back off and retry before giving up.
+                if (attempt < MAX_RETRY) { setTimeout(go, 600 * attempt); }
+                else { release(); if (ctx.failure) ctx.failure(err); }
+              });
+          }
+          go();
+        });
+        drain();
       }
+
       function makeRunner() {
         var ctx = { success: null, failure: null };
         var proxy = new Proxy({}, {
