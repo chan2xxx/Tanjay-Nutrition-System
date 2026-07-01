@@ -8,6 +8,7 @@
   <!-- Tailwind, Chart.js, Fonts, Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Questrial&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -402,10 +403,6 @@
       </div>
       <p id="stat-vita" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
       <p class="text-[10px] text-gray-400 mt-1">mothers supplemented</p>
-      <div class="flex items-center justify-between mt-3 gap-2 min-h-[28px]">
-        <span id="trend-vita" class="text-[10px] font-bold"></span>
-        <span id="spark-vita" class="block h-[28px] w-[96px] shrink-0"></span>
-      </div>
     </div>
     <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
       <span class="absolute inset-x-0 top-0 h-1" style="background:#0891b2"></span>
@@ -417,10 +414,6 @@
       </div>
       <p id="stat-mms" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
       <p class="text-[10px] text-gray-400 mt-1">mothers supplemented</p>
-      <div class="flex items-center justify-between mt-3 gap-2 min-h-[28px]">
-        <span id="trend-mms" class="text-[10px] font-bold"></span>
-        <span id="spark-mms" class="block h-[28px] w-[96px] shrink-0"></span>
-      </div>
     </div>
     <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
       <span class="absolute inset-x-0 top-0 h-1" style="background:#d97706"></span>
@@ -432,10 +425,6 @@
       </div>
       <p id="stat-mothers" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
       <p class="text-[10px] text-gray-400 mt-1">unique records</p>
-      <div class="flex items-center justify-between mt-3 gap-2 min-h-[28px]">
-        <span id="trend-mothers" class="text-[10px] font-bold"></span>
-        <span id="spark-mothers" class="block h-[28px] w-[96px] shrink-0"></span>
-      </div>
     </div>
     <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
       <span class="absolute inset-x-0 top-0 h-1" style="background:#e11d48"></span>
@@ -447,10 +436,6 @@
       </div>
       <p id="stat-risk" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
       <p class="text-[10px] text-gray-400 mt-1">underweight / obese</p>
-      <div class="flex items-center justify-between mt-3 gap-2 min-h-[28px]">
-        <span id="trend-risk" class="text-[10px] font-bold"></span>
-        <span id="spark-risk" class="block h-[28px] w-[96px] shrink-0"></span>
-      </div>
     </div>
   </div>
 
@@ -2870,17 +2855,11 @@
   <!-- CLIENT LOGIC -->
     <!-- ===== Static-mode transport (GitHub Pages -> GAS API) ===== -->
   <script>
-    // 1) Your deployed GAS Web App URL (ends in /exec). Update if you redeploy to a NEW deployment.
     const GAS_API_URL = "https://script.google.com/macros/s/AKfycbyDVaGRxz5kXXhBCWKf0aBNnMLmLQ2Wn103jPpKUL9PjZQ2qPz5Y-NPUx3YzjYgvDl9dg/exec";
-
-    // 2) Shim: routes google.script.run.<fn>(...) to a POST on the GAS API.
     (function () {
       function callApi(action, argsLike, ctx) {
         var args = Array.prototype.slice.call(argsLike);
-        fetch(GAS_API_URL, {
-          method: "POST",
-          body: JSON.stringify({ action: action, args: args })
-        })
+        fetch(GAS_API_URL, { method: "POST", body: JSON.stringify({ action: action, args: args }) })
         .then(function (r) { return r.json(); })
         .then(function (env) {
           if (env && env.ok) { if (ctx.success) ctx.success(env.result); }
@@ -3622,49 +3601,6 @@
     refreshDashboard();
   }
 
-  /* ---- DOMO-style KPI card visuals (sparkline + month-over-month trend) ---- */
-  function dashMonthCounts(records) {
-    const m = {};
-    records.forEach(r => { const k = (r.date || "").slice(0, 7); if (/^\d{4}-\d{2}$/.test(k)) m[k] = (m[k] || 0) + 1; });
-    return Object.keys(m).sort().map(k => m[k]);
-  }
-  function dashSparkline(values, color) {
-    let v = values.slice(-8);
-    if (v.length === 0) return "";
-    if (v.length === 1) v = [0, v[0]];
-    const w = 100, h = 28, pad = 3;
-    const max = Math.max.apply(null, v), min = Math.min.apply(null, v.concat([0]));
-    const range = (max - min) || 1;
-    const step = w / (v.length - 1);
-    const pts = v.map((val, i) => [i * step, h - pad - ((val - min) / range) * (h - pad * 2)]);
-    const line = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
-    const area = "M0 " + h + " L" + line.slice(1) + " L" + w + " " + h + " Z";
-    const last = pts[pts.length - 1];
-    return '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" width="100%" height="100%">'
-      + '<path d="' + area + '" fill="' + color + '" fill-opacity="0.12"/>'
-      + '<path d="' + line + '" fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
-      + '<circle cx="' + last[0].toFixed(1) + '" cy="' + last[1].toFixed(1) + '" r="2.3" fill="' + color + '"/></svg>';
-  }
-  function dashTrend(values) {
-    if (values.length < 2) return null;
-    const a = values[values.length - 2], b = values[values.length - 1];
-    if (a === 0) return b > 0 ? { up: true, pct: 100 } : null;
-    const pct = Math.round(((b - a) / a) * 100);
-    return { up: pct >= 0, pct: Math.abs(pct) };
-  }
-  function renderDashCard(prefix, records, color, invert) {
-    const vals = dashMonthCounts(records);
-    const sp = document.getElementById("spark-" + prefix); if (sp) sp.innerHTML = dashSparkline(vals, color);
-    const tb = document.getElementById("trend-" + prefix); if (!tb) return;
-    const tr = dashTrend(vals);
-    if (!tr) { tb.textContent = "\u2014"; tb.className = "text-[10px] font-bold text-gray-300"; tb.removeAttribute("style"); return; }
-    const good = invert ? !tr.up : tr.up;
-    const c = good ? "#059669" : "#e11d48";
-    tb.textContent = (tr.up ? "\u25B2 " : "\u25BC ") + tr.pct + "%";
-    tb.className = "text-[10px] font-bold px-1.5 py-0.5 rounded-md";
-    tb.style.color = c; tb.style.background = c + "1a";
-  }
-
   function updateDashboardStats() {
     const vitaSet = dashFilter(vitaminADatabase), mmsSet = dashFilter(mmsDatabase);
     const all = dashFilter(vitaminADatabase.concat(mmsDatabase).concat(anmumDatabase).concat(calciumDatabase).concat(feso4Database));
@@ -3675,15 +3611,11 @@
     const names = new Set(all.map(r => (r.name || "").toLowerCase()).filter(Boolean));
     document.getElementById("stat-mothers").innerText = names.size.toLocaleString();
     document.getElementById("stat-risk").innerText = risk.length.toLocaleString();
-
-    renderDashCard("vita", vitaSet, "#059669");
-    renderDashCard("mms", mmsSet, "#0891b2");
-    renderDashCard("mothers", all, "#d97706");
-    renderDashCard("risk", risk, "#e11d48", true);
   }
 
   function renderCharts() {
     if (typeof Chart === "undefined") return;
+    var DL = (typeof ChartDataLabels !== "undefined") ? [ChartDataLabels] : [];
     const all = dashFilter(vitaminADatabase.concat(mmsDatabase).concat(anmumDatabase).concat(calciumDatabase).concat(feso4Database));
 
     // BMI doughnut (5 official categories, derived from BMI)
@@ -3701,7 +3633,16 @@
             backgroundColor: ["#b91c1c", "#f59e0b", "#10b981", "#3b82f6", "#ef4444"], borderWidth: 0 }]
         },
         options: { responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { position: "bottom", labels: { font: { size: 10 }, boxWidth: 12 } } } }
+          plugins: {
+            legend: { position: "bottom", labels: { font: { size: 10 }, boxWidth: 12 } },
+            datalabels: {
+              color: "#ffffff", font: { size: 11, weight: "bold" },
+              textStrokeColor: "rgba(0,0,0,0.25)", textStrokeWidth: 2,
+              formatter: function (v) { return v > 0 ? v.toLocaleString() : ""; }
+            }
+          }
+        },
+        plugins: DL
       });
     }
 
@@ -3717,8 +3658,17 @@
         data: { labels: top.map(t => t[0]),
           datasets: [{ label: "Records", data: top.map(t => t[1]), backgroundColor: "#0f766e", borderRadius: 6 }] },
         options: { responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: { x: { ticks: { font: { size: 9 } } }, y: { beginAtZero: true, ticks: { precision: 0 } } } }
+          layout: { padding: { top: 22 } },
+          plugins: {
+            legend: { display: false },
+            datalabels: {
+              anchor: "end", align: "end", offset: 2,
+              color: "#0f766e", font: { size: 10, weight: "bold" },
+              formatter: function (v) { return v > 0 ? v.toLocaleString() : ""; }
+            }
+          },
+          scales: { x: { ticks: { font: { size: 9 } } }, y: { beginAtZero: true, ticks: { precision: 0 } } } },
+        plugins: DL
       });
     }
   }
