@@ -392,37 +392,65 @@
 
   <!-- Metric cards -->
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-      <div class="flex items-center justify-between">
-        <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Vitamin A Given</p>
-        <i class="fa-solid fa-capsules text-emerald-500"></i>
+    <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
+      <span class="absolute inset-x-0 top-0 h-1" style="background:#059669"></span>
+      <div class="flex items-start justify-between">
+        <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">Vitamin A Given</p>
+        <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#0596691a">
+          <i class="fa-solid fa-capsules text-[13px]" style="color:#059669"></i>
+        </span>
       </div>
-      <p id="stat-vita" class="text-3xl font-extrabold text-[#1e293b] mt-2">0</p>
+      <p id="stat-vita" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
       <p class="text-[10px] text-gray-400 mt-1">mothers supplemented</p>
-    </div>
-    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-      <div class="flex items-center justify-between">
-        <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest">MMS Given</p>
-        <i class="fa-solid fa-tablets text-cyan-500"></i>
+      <div class="flex items-center justify-between mt-3 gap-2 min-h-[28px]">
+        <span id="trend-vita" class="text-[10px] font-bold"></span>
+        <span id="spark-vita" class="block h-[28px] w-[96px] shrink-0"></span>
       </div>
-      <p id="stat-mms" class="text-3xl font-extrabold text-[#1e293b] mt-2">0</p>
+    </div>
+    <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
+      <span class="absolute inset-x-0 top-0 h-1" style="background:#0891b2"></span>
+      <div class="flex items-start justify-between">
+        <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">MMS Given</p>
+        <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#0891b21a">
+          <i class="fa-solid fa-tablets text-[13px]" style="color:#0891b2"></i>
+        </span>
+      </div>
+      <p id="stat-mms" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
       <p class="text-[10px] text-gray-400 mt-1">mothers supplemented</p>
-    </div>
-    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-      <div class="flex items-center justify-between">
-        <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Mothers Tracked</p>
-        <i class="fa-solid fa-people-group text-amber-500"></i>
+      <div class="flex items-center justify-between mt-3 gap-2 min-h-[28px]">
+        <span id="trend-mms" class="text-[10px] font-bold"></span>
+        <span id="spark-mms" class="block h-[28px] w-[96px] shrink-0"></span>
       </div>
-      <p id="stat-mothers" class="text-3xl font-extrabold text-[#1e293b] mt-2">0</p>
+    </div>
+    <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
+      <span class="absolute inset-x-0 top-0 h-1" style="background:#d97706"></span>
+      <div class="flex items-start justify-between">
+        <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">Mothers Tracked</p>
+        <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#d977061a">
+          <i class="fa-solid fa-people-group text-[13px]" style="color:#d97706"></i>
+        </span>
+      </div>
+      <p id="stat-mothers" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
       <p class="text-[10px] text-gray-400 mt-1">unique records</p>
-    </div>
-    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-      <div class="flex items-center justify-between">
-        <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest">High Risk</p>
-        <i class="fa-solid fa-triangle-exclamation text-red-500"></i>
+      <div class="flex items-center justify-between mt-3 gap-2 min-h-[28px]">
+        <span id="trend-mothers" class="text-[10px] font-bold"></span>
+        <span id="spark-mothers" class="block h-[28px] w-[96px] shrink-0"></span>
       </div>
-      <p id="stat-risk" class="text-3xl font-extrabold text-[#1e293b] mt-2">0</p>
+    </div>
+    <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
+      <span class="absolute inset-x-0 top-0 h-1" style="background:#e11d48"></span>
+      <div class="flex items-start justify-between">
+        <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">High Risk</p>
+        <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#e11d481a">
+          <i class="fa-solid fa-triangle-exclamation text-[13px]" style="color:#e11d48"></i>
+        </span>
+      </div>
+      <p id="stat-risk" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
       <p class="text-[10px] text-gray-400 mt-1">underweight / obese</p>
+      <div class="flex items-center justify-between mt-3 gap-2 min-h-[28px]">
+        <span id="trend-risk" class="text-[10px] font-bold"></span>
+        <span id="spark-risk" class="block h-[28px] w-[96px] shrink-0"></span>
+      </div>
     </div>
   </div>
 
@@ -3594,14 +3622,64 @@
     refreshDashboard();
   }
 
-  function updateDashboardStats() {
-    const all = dashFilter(vitaminADatabase.concat(mmsDatabase).concat(anmumDatabase).concat(calciumDatabase).concat(feso4Database));
-    document.getElementById("stat-vita").innerText = dashFilter(vitaminADatabase).length;
-    document.getElementById("stat-mms").innerText = dashFilter(mmsDatabase).length;
+  /* ---- DOMO-style KPI card visuals (sparkline + month-over-month trend) ---- */
+  function dashMonthCounts(records) {
+    const m = {};
+    records.forEach(r => { const k = (r.date || "").slice(0, 7); if (/^\d{4}-\d{2}$/.test(k)) m[k] = (m[k] || 0) + 1; });
+    return Object.keys(m).sort().map(k => m[k]);
+  }
+  function dashSparkline(values, color) {
+    let v = values.slice(-8);
+    if (v.length === 0) return "";
+    if (v.length === 1) v = [0, v[0]];
+    const w = 100, h = 28, pad = 3;
+    const max = Math.max.apply(null, v), min = Math.min.apply(null, v.concat([0]));
+    const range = (max - min) || 1;
+    const step = w / (v.length - 1);
+    const pts = v.map((val, i) => [i * step, h - pad - ((val - min) / range) * (h - pad * 2)]);
+    const line = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+    const area = "M0 " + h + " L" + line.slice(1) + " L" + w + " " + h + " Z";
+    const last = pts[pts.length - 1];
+    return '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" width="100%" height="100%">'
+      + '<path d="' + area + '" fill="' + color + '" fill-opacity="0.12"/>'
+      + '<path d="' + line + '" fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+      + '<circle cx="' + last[0].toFixed(1) + '" cy="' + last[1].toFixed(1) + '" r="2.3" fill="' + color + '"/></svg>';
+  }
+  function dashTrend(values) {
+    if (values.length < 2) return null;
+    const a = values[values.length - 2], b = values[values.length - 1];
+    if (a === 0) return b > 0 ? { up: true, pct: 100 } : null;
+    const pct = Math.round(((b - a) / a) * 100);
+    return { up: pct >= 0, pct: Math.abs(pct) };
+  }
+  function renderDashCard(prefix, records, color, invert) {
+    const vals = dashMonthCounts(records);
+    const sp = document.getElementById("spark-" + prefix); if (sp) sp.innerHTML = dashSparkline(vals, color);
+    const tb = document.getElementById("trend-" + prefix); if (!tb) return;
+    const tr = dashTrend(vals);
+    if (!tr) { tb.textContent = "\u2014"; tb.className = "text-[10px] font-bold text-gray-300"; tb.removeAttribute("style"); return; }
+    const good = invert ? !tr.up : tr.up;
+    const c = good ? "#059669" : "#e11d48";
+    tb.textContent = (tr.up ? "\u25B2 " : "\u25BC ") + tr.pct + "%";
+    tb.className = "text-[10px] font-bold px-1.5 py-0.5 rounded-md";
+    tb.style.color = c; tb.style.background = c + "1a";
+  }
 
+  function updateDashboardStats() {
+    const vitaSet = dashFilter(vitaminADatabase), mmsSet = dashFilter(mmsDatabase);
+    const all = dashFilter(vitaminADatabase.concat(mmsDatabase).concat(anmumDatabase).concat(calciumDatabase).concat(feso4Database));
+    const risk = all.filter(r => isHighRisk(r.status));
+
+    document.getElementById("stat-vita").innerText = vitaSet.length.toLocaleString();
+    document.getElementById("stat-mms").innerText = mmsSet.length.toLocaleString();
     const names = new Set(all.map(r => (r.name || "").toLowerCase()).filter(Boolean));
-    document.getElementById("stat-mothers").innerText = names.size;
-    document.getElementById("stat-risk").innerText = all.filter(r => isHighRisk(r.status)).length;
+    document.getElementById("stat-mothers").innerText = names.size.toLocaleString();
+    document.getElementById("stat-risk").innerText = risk.length.toLocaleString();
+
+    renderDashCard("vita", vitaSet, "#059669");
+    renderDashCard("mms", mmsSet, "#0891b2");
+    renderDashCard("mothers", all, "#d97706");
+    renderDashCard("risk", risk, "#e11d48", true);
   }
 
   function renderCharts() {
