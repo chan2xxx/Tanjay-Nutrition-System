@@ -106,6 +106,11 @@
     .sig-grid { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 6mm !important; }
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
   }
+
+  /* DOMO-style KPI tiles: Century Gothic footer */
+  .card-kpi { font-family: 'Century Gothic', 'Questrial', 'Futura', 'Trebuchet MS', 'Segoe UI', sans-serif; }
+  .card-kpi .kpi-num { letter-spacing: -0.01em; }
+  .card-kpi .kpi-label { letter-spacing: 0.01em; }
 </style>
 
 </head>
@@ -479,169 +484,155 @@
   <div>
     <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2">Maternal Registry &amp; Supplementation</p>
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#d97706"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">Mothers Tracked</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#d977061a">
-            <i class="fa-solid fa-people-group text-[13px]" style="color:#d97706"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#d97706">
+        <p id="stat-mothers" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">Mothers Tracked</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">unique mothers</p>
         </div>
-        <p id="stat-mothers" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">unique mothers</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-people-group text-[10px] text-white"></i>
+        </span>
       </div>
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#e11d48"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">High Risk</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#e11d481a">
-            <i class="fa-solid fa-triangle-exclamation text-[13px]" style="color:#e11d48"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#e11d48">
+        <p id="stat-risk" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">High Risk</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">underweight / obese</p>
         </div>
-        <p id="stat-risk" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">underweight / obese</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-triangle-exclamation text-[10px] text-white"></i>
+        </span>
       </div>
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#059669"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">Vitamin A Given</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#0596691a">
-            <i class="fa-solid fa-capsules text-[13px]" style="color:#059669"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#059669">
+        <p id="stat-vita" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">Vitamin A Given</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">mothers supplemented</p>
         </div>
-        <p id="stat-vita" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">mothers supplemented</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-capsules text-[10px] text-white"></i>
+        </span>
       </div>
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#0891b2"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">MMS Given</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#0891b21a">
-            <i class="fa-solid fa-tablets text-[13px]" style="color:#0891b2"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#0891b2">
+        <p id="stat-mms" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">MMS Given</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">mothers supplemented</p>
         </div>
-        <p id="stat-mms" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">mothers supplemented</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-tablets text-[10px] text-white"></i>
+        </span>
       </div>
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#7c3aed"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">Anmum Milk Given</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#7c3aed1a">
-            <i class="fa-solid fa-mug-hot text-[13px]" style="color:#7c3aed"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#7c3aed">
+        <p id="stat-anmum" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">Anmum Milk Given</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">mothers supplemented</p>
         </div>
-        <p id="stat-anmum" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">mothers supplemented</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-mug-hot text-[10px] text-white"></i>
+        </span>
       </div>
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#4f46e5"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">Calcium Given</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#4f46e51a">
-            <i class="fa-solid fa-bone text-[13px]" style="color:#4f46e5"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#4f46e5">
+        <p id="stat-calcium" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">Calcium Given</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">mothers supplemented</p>
         </div>
-        <p id="stat-calcium" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">mothers supplemented</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-bone text-[10px] text-white"></i>
+        </span>
       </div>
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#ea580c"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">FeSO4 Given</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#ea580c1a">
-            <i class="fa-solid fa-droplet text-[13px]" style="color:#ea580c"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#ea580c">
+        <p id="stat-feso4" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">FeSO4 Given</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">mothers supplemented</p>
         </div>
-        <p id="stat-feso4" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">mothers supplemented</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-droplet text-[10px] text-white"></i>
+        </span>
       </div>
     </div>
   </div>
   <div>
     <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2">Children &amp; Learners</p>
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#b45309"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">Multi Iron Syrup</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#b453091a">
-            <i class="fa-solid fa-prescription-bottle-medical text-[13px]" style="color:#b45309"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#b45309">
+        <p id="stat-iron" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">Multi Iron Syrup</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">children given</p>
         </div>
-        <p id="stat-iron" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">children given</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-prescription-bottle-medical text-[10px] text-white"></i>
+        </span>
       </div>
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#db2777"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">WIFA (Female Learners)</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#db27771a">
-            <i class="fa-solid fa-person-dress text-[13px]" style="color:#db2777"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#db2777">
+        <p id="stat-wifa" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">WIFA (Female Learners)</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">learners given</p>
         </div>
-        <p id="stat-wifa" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">learners given</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-person-dress text-[10px] text-white"></i>
+        </span>
       </div>
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#0284c7"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">LNS-SQ</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#0284c71a">
-            <i class="fa-solid fa-bowl-food text-[13px]" style="color:#0284c7"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#0284c7">
+        <p id="stat-lns" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">LNS-SQ</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">children given</p>
         </div>
-        <p id="stat-lns" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">children given</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-bowl-food text-[10px] text-white"></i>
+        </span>
       </div>
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#c026d3"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">MNP Given</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#c026d31a">
-            <i class="fa-solid fa-mortar-pestle text-[13px]" style="color:#c026d3"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#c026d3">
+        <p id="stat-mnp" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">MNP Given</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">children given</p>
         </div>
-        <p id="stat-mnp" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">children given</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-mortar-pestle text-[10px] text-white"></i>
+        </span>
       </div>
     </div>
   </div>
   <div>
     <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2">Establishments &amp; Production</p>
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#16a34a"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">Sari-Sari Stores</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#16a34a1a">
-            <i class="fa-solid fa-store text-[13px]" style="color:#16a34a"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#16a34a">
+        <p id="stat-sari" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">Sari-Sari Stores</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">stores listed</p>
         </div>
-        <p id="stat-sari" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">stores listed</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-store text-[10px] text-white"></i>
+        </span>
       </div>
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#92400e"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">Bakeries</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#92400e1a">
-            <i class="fa-solid fa-bread-slice text-[13px]" style="color:#92400e"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#92400e">
+        <p id="stat-bakery" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">Bakeries</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">bakeries listed</p>
         </div>
-        <p id="stat-bakery" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">bakeries listed</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-bread-slice text-[10px] text-white"></i>
+        </span>
       </div>
-      <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm p-4 overflow-hidden">
-        <span class="absolute inset-x-0 top-0 h-1" style="background:#65a30d"></span>
-        <div class="flex items-start justify-between">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest pt-0.5">Food Production</p>
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#65a30d1a">
-            <i class="fa-solid fa-wheat-awn text-[13px]" style="color:#65a30d"></i>
-          </span>
+      <div class="card-kpi relative rounded-2xl p-4 pb-3 min-h-[116px] flex flex-col justify-between overflow-hidden shadow-sm" style="background:#65a30d">
+        <p id="stat-fp" class="kpi-num text-4xl md:text-[42px] font-bold text-white leading-none">0</p>
+        <div class="pr-7">
+          <p class="kpi-label text-white text-[13px] font-semibold leading-tight">Food Production</p>
+          <p class="text-white/70 text-[10px] leading-tight mt-0.5">entries listed</p>
         </div>
-        <p id="stat-fp" class="text-[30px] leading-none font-black text-[#1e293b] mt-2">0</p>
-        <p class="text-[10px] text-gray-400 mt-1">entries listed</p>
+        <span class="absolute bottom-2.5 right-2.5 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fa-solid fa-wheat-awn text-[10px] text-white"></i>
+        </span>
       </div>
     </div>
   </div>
