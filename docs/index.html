@@ -336,11 +336,94 @@
         <p id="ticker-day-date" class="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest leading-none">—</p>
         <p id="ticker-time" class="text-xs font-black text-slate-700 tracking-wide mt-1">—</p>
       </div>
-      <button onclick="syncData()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow-sm">
-        <i class="fa-solid fa-rotate text-[10px]"></i><span class="hidden sm:inline">Sync Cloud</span>
-      </button>
+      <div class="flex items-center gap-2">
+        <button onclick="syncData()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow-sm">
+          <i class="fa-solid fa-rotate text-[10px]"></i><span class="hidden sm:inline">Sync Cloud</span>
+        </button>
+        <button onclick="openGuidelineModal()" class="bg-white border border-gray-200 hover:bg-gray-50 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow-sm">
+          <i class="fa-solid fa-book-open text-[10px] text-emerald-600"></i><span class="hidden sm:inline">Guidelines</span>
+        </button>
+      </div>
     </div>
   </header>
+
+<!-- ============================================================
+     SYSTEM GUIDELINES MODAL (formulas & classifications)
+     ============================================================ -->
+<div id="guideline-modal" class="hidden fixed inset-0 z-[10000] bg-black/50 flex items-center justify-center p-4" onclick="if(event.target===this)closeGuidelineModal()">
+  <div class="bg-white max-w-2xl w-full rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto">
+    <div class="flex items-center justify-between p-5 border-b border-gray-100 sticky top-0 bg-white z-10">
+      <div class="flex items-center gap-2.5">
+        <span class="w-9 h-9 rounded-xl flex items-center justify-center bg-emerald-50 shrink-0"><i class="fa-solid fa-book-open text-emerald-600"></i></span>
+        <div>
+          <h3 class="text-base font-extrabold text-[#1e293b] leading-none">System Guidelines</h3>
+          <p class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold mt-1">Formulas &amp; Classifications</p>
+        </div>
+      </div>
+      <button onclick="closeGuidelineModal()" class="text-gray-400 hover:text-gray-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+    </div>
+
+    <div class="p-5 space-y-6 text-sm text-slate-700">
+
+      <!-- 1. BMI formula -->
+      <section>
+        <h4 class="text-[11px] font-black text-emerald-700 uppercase tracking-widest mb-2">1. Body Mass Index (BMI)</h4>
+        <p class="mb-2">The system computes BMI automatically from the encoded weight and height:</p>
+        <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-center font-bold text-emerald-800 text-base">
+          BMI = weight (kg) &divide; [ height (m) ]&sup2;
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Height is entered in centimeters and converted to meters (&divide;&nbsp;100). The result is rounded to one decimal place.</p>
+        <p class="text-xs text-gray-600 mt-1"><span class="font-bold">Example:</span> 55&nbsp;kg, 160&nbsp;cm &rarr; 55 &divide; (1.60)&sup2; = 55 &divide; 2.56 = <span class="font-bold">21.5</span> &rarr; Normal.</p>
+      </section>
+
+      <!-- 2. Classification -->
+      <section>
+        <h4 class="text-[11px] font-black text-emerald-700 uppercase tracking-widest mb-2">2. Nutritional Status Classification (BMI)</h4>
+        <table class="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+          <thead>
+            <tr class="bg-emerald-600 text-white text-left">
+              <th class="px-3 py-2 font-bold">Classification</th>
+              <th class="px-3 py-2 font-bold">BMI Range</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-gray-100"><td class="px-3 py-2"><span class="inline-block w-2.5 h-2.5 rounded-full mr-2" style="background:#b91c1c"></span>Severely Underweight</td><td class="px-3 py-2">Below 16.0</td></tr>
+            <tr class="border-t border-gray-100 bg-gray-50"><td class="px-3 py-2"><span class="inline-block w-2.5 h-2.5 rounded-full mr-2" style="background:#f59e0b"></span>Underweight</td><td class="px-3 py-2">16.0 &ndash; 18.4</td></tr>
+            <tr class="border-t border-gray-100"><td class="px-3 py-2"><span class="inline-block w-2.5 h-2.5 rounded-full mr-2" style="background:#10b981"></span>Normal</td><td class="px-3 py-2">18.5 &ndash; 24.9</td></tr>
+            <tr class="border-t border-gray-100 bg-gray-50"><td class="px-3 py-2"><span class="inline-block w-2.5 h-2.5 rounded-full mr-2" style="background:#3b82f6"></span>Overweight</td><td class="px-3 py-2">25.0 &ndash; 29.9</td></tr>
+            <tr class="border-t border-gray-100"><td class="px-3 py-2"><span class="inline-block w-2.5 h-2.5 rounded-full mr-2" style="background:#ef4444"></span>Obese</td><td class="px-3 py-2">30.0 and above</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 3. High risk -->
+      <section>
+        <h4 class="text-[11px] font-black text-emerald-700 uppercase tracking-widest mb-2">3. High-Risk Flag</h4>
+        <p>Records classified as <span class="font-bold text-red-700">Severely Underweight</span>, <span class="font-bold text-amber-600">Underweight</span>, or <span class="font-bold text-red-600">Obese</span> are counted under the <span class="font-bold">High Risk</span> card on the dashboard.</p>
+      </section>
+
+      <!-- 4. Age brackets -->
+      <section>
+        <h4 class="text-[11px] font-black text-emerald-700 uppercase tracking-widest mb-2">4. Reproductive Age Brackets</h4>
+        <table class="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+          <thead>
+            <tr class="bg-emerald-600 text-white text-left">
+              <th class="px-3 py-2 font-bold">Bracket</th>
+              <th class="px-3 py-2 font-bold">Age (years)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-gray-100"><td class="px-3 py-2">10 &ndash; 14</td><td class="px-3 py-2">14 years and below</td></tr>
+            <tr class="border-t border-gray-100 bg-gray-50"><td class="px-3 py-2">15 &ndash; 19</td><td class="px-3 py-2">15 to 19 years</td></tr>
+            <tr class="border-t border-gray-100"><td class="px-3 py-2">20 &ndash; 49</td><td class="px-3 py-2">20 years and above</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <p class="text-[11px] text-gray-400 border-t border-gray-100 pt-3">These classifications are applied automatically by the system when weight and height are encoded. BMI cut-offs follow the standard adult (WHO) ranges.</p>
+    </div>
+  </div>
+</div>
 
 
       <!-- WORKSPACE TABS -->
@@ -3057,7 +3140,7 @@
   window.addEventListener("DOMContentLoaded", () => {
     startClock();
     // Move form modals to <body> so their fixed backdrop covers the whole screen
-    ["vitamin-a-modal","mms-modal","anmum-modal","iron-modal","wifa-modal","lns-modal","calcium-modal","feso4-modal","mnp-modal","sari-modal","bakery-modal","fp-modal"].forEach(id => {
+    ["vitamin-a-modal","mms-modal","anmum-modal","iron-modal","wifa-modal","lns-modal","calcium-modal","feso4-modal","mnp-modal","sari-modal","bakery-modal","fp-modal","guideline-modal"].forEach(id => {
       const m = document.getElementById(id);
       if (m && m.parentElement !== document.body) document.body.appendChild(m);
     });
@@ -3529,6 +3612,16 @@
     const bmi = computeBMI(w, h);
     document.getElementById(prefix + "-modal-bmi").value = bmi || "";
     document.getElementById(prefix + "-modal-status").value = classifyStatus(bmi);
+  }
+
+  /* ---- System Guidelines modal ---- */
+  function openGuidelineModal() {
+    const m = document.getElementById("guideline-modal");
+    if (m) m.classList.remove("hidden");
+  }
+  function closeGuidelineModal() {
+    const m = document.getElementById("guideline-modal");
+    if (m) m.classList.add("hidden");
   }
   function syncAgeGroup(prefix) {
     document.getElementById(prefix + "-modal-agegroup").value =
